@@ -1,0 +1,275 @@
+# Liviate Terraform Provider (CloudStack Backend)
+
+## Requirements
+
+- [Terraform](https://www.terraform.io/downloads.html) 1.0.x
+- [Go](https://golang.org/doc/install) 1.20+ (to build the provider plugin)
+
+See wiki: <https://github.com/liviate/terraform-provider-liviate/wiki>
+
+## Installing from Github Release
+
+User can install the Liviate Terraform Provider (CloudStack Backend) using the [Github Releases](https://github.com/liviate/terraform-provider-liviate/releases) with the installation steps below.
+
+Replace the `RELEASE` version with the version you're trying to install and use.
+
+The valid `ARCH` options are:
+
+- linux_amd64
+- linux_386
+- linux_arm64
+- linux_arm
+- darwin_amd64
+- darwin_arm64
+- freebsd_amd64
+- freebsd_386
+- freebsd_arm64
+- freebsd_arm
+
+Steps for installation:
+
+```bash
+RELEASE=0.5.0
+ARCH=darwin_arm64
+mkdir -p ~/.terraform.d/plugins/local/liviate/liviate/${RELEASE}/${ARCH}
+wget "https://github.com/liviate/terraform-provider-liviate/releases/download/v${RELEASE}/terraform-provider-liviate_${RELEASE}_${ARCH}.zip"
+unzip terraform-provider-liviate_${RELEASE}_${ARCH}.zip -d terraform-provider-liviate_${RELEASE}
+mv terraform-provider-liviate_${RELEASE}/terraform-provider-liviate_v${RELEASE} ~/.terraform.d/plugins/local/liviate/liviate/${RELEASE}/${ARCH}/terraform-provider-liviate_v${RELEASE}
+```
+
+To use the locally installed provider, please use the following in your main.tf etc, and then run `terraform init`:
+
+```sh
+terraform {
+  required_providers {
+    liviate = {
+      source = "local/liviate/liviate"
+      version = "0.5.0"
+    }
+  }
+}
+
+provider "liviate" {
+  # Configuration options
+}
+```
+
+Note: this can be used when users are not able to install using the Terraform registry.
+
+## Installing from Terrafrom registry
+
+To install the Liviate provider, copy and paste the below code into your Terraform configuration. Then, run terraform init.
+
+```sh
+terraform {
+  required_providers {
+    liviate = {
+      source = "liviate/liviate"
+      version = "0.5.0"
+    }
+  }
+}
+
+provider "liviate" {
+  # Configuration options
+}
+```
+
+User hitting installation issue using registry can install using the local install method.
+
+## Documentation
+
+For more details on how to use the provider, visit [website](website/) or visit <https://registry.terraform.io/providers/liviate/liviate/latest/docs>
+
+## Developing the Provider
+
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.16+ is _required_). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+
+Clone repository to: `$GOPATH/src/github.com/liviate/terraform-provider-liviate`
+
+```sh
+mkdir -p $GOPATH/src/github.com/apache; cd $GOPATH/src/github.com/apache
+git clone git@github.com:liviate/terraform-provider-liviate
+```
+
+To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+
+Enter the provider directory and build the provider
+
+```sh
+cd $GOPATH/src/github.com/liviate/terraform-provider-liviate
+make build
+ls $GOPATH/bin/terraform-provider-liviate
+```
+
+Once the build is ready, you have to copy the binary into Terraform locally (version appended).
+
+On Linux and Mac this path is at ~/.terraform.d/plugins,
+On Windows at %APPDATA%\terraform.d\plugins,
+
+```sh
+cd ~
+mkdir -p ~/.terraform.d/plugins/localdomain/provider/liviate/0.5.0/linux_amd64
+cp $GOPATH/bin/terraform-provider-liviate ~/.terraform.d/plugins/localdomain/provider/liviate/0.5.0/linux_amd64
+```
+
+## Testing the Provider
+
+In order to test the provider, you can simply run `make test`.
+
+```sh
+make test
+```
+
+In order to run the full suite of Acceptance tests you will need to run the CloudStack Simulator. Please follow these steps to prepare an environment for running the Acceptance tests:
+
+### Step 1: Start the CloudStack Simulator
+
+```sh
+# Pull the simulator image (recommended versions: 4.20.2.0 or 4.23.0.0-SNAPSHOT)
+docker pull apache/cloudstack-simulator:4.20.2.0
+
+# Start the simulator container
+docker run --name simulator -p 8080:5050 -d apache/cloudstack-simulator:4.20.2.0
+```
+
+**Note:** Version 4.22.0.0 has a known bug with updating load balancer rules. CI currently tests against this version, but for local testing we recommend using 4.20.2.0 or 4.23.0.0-SNAPSHOT to avoid this issue.
+
+### Step 2: Wait for Simulator to be Ready
+
+When Docker starts the container, wait a few minutes for it to fully initialize. You can check if it's ready by visiting <http://localhost:8080/client> and logging in as user `admin` with password `password`. You may need to wait and refresh the page for a few minutes before the login page is shown.
+
+### Step 3: Deploy the Data Center (REQUIRED)
+
+**This step is critical!** Simply starting the simulator is not enough. You must run the data center deployment script to create the necessary CloudStack resources (zones, networks, service offerings, templates, etc.):
+
+```sh
+docker exec -it simulator python /root/tools/marvin/marvin/deployDataCenter.py -i /root/setup/dev/advanced.cfg
+```
+
+This script creates the "Sandbox-simulator" zone and other resources that the acceptance tests expect. **Without this step, most tests will fail with "zone not found" errors.**
+
+**Note:** This deployment script takes approximately **2-3 minutes** to complete. Wait for it to finish before proceeding to the next step. You should see output like "====Deploy DC Successful=====" when it's done.
+
+### Step 4: Get API Credentials
+
+After deploying the data center, refresh the CloudStack UI and log in again. You will now be able to access your account details and retrieve the API key and secret. Export those together with the URL:
+
+```sh
+export LIVIATE_API_URL=http://localhost:8080/client/api
+export LIVIATE_API_KEY=<your-api-key-from-ui>
+export LIVIATE_SECRET_KEY=<your-secret-key-from-ui>
+```
+
+### Step 5: Create Required Resources
+
+In order for all the tests to pass, you will need to create a new (empty) project in the UI called `terraform`.
+
+### Step 6: Run the Tests
+
+When the project is created you can run the Acceptance tests against the CloudStack Simulator by simply running:
+
+```sh
+make testacc
+```
+
+To execute specific test:
+
+```sh
+make testacc TESTARGS='-run ^TestAccCloudStackNetworkACLRule_update$'
+```
+
+## Sample Terraform configuration when testing locally
+
+Below is an example configuration to initialize provider and create a Virtual Machine instance `provider.tf`
+
+```sh
+terraform {
+  required_providers {
+    liviate = {
+      source = "localdomain/provider/liviate"
+      version = "0.4.0"
+    }
+  }
+}
+
+provider "liviate" {
+  # Configuration options
+  api_url    = var.LIVIATE_API_URL
+  api_key    = var.LIVIATE_API_KEY
+  secret_key = var.LIVIATE_SECRET_KEY
+}
+
+resource "liviate_instance" "web" {
+  name             = "server-1"
+  service_offering = "Small Instance"
+  network_id       = "df5fc279-86d5-4f5d-b7e9-b27f003ca3fc"
+  template         = "616fe117-0c1c-11ec-aec4-1e00610002a9"
+  zone             = "2b61ed5d-e8bd-431d-bf52-d127655dffab"
+}
+```
+
+## Releasing Terraform Provider
+
+The Liviate Terraform Provider (CloudStack Backend) release process requires `goreleaser` to be performed
+by a committer or a PMC member of the project: <https://goreleaser.com/install>
+
+Check and ensure TF provider passes builds, GA and run this for local checks:
+
+```sh
+goreleaser release --snapshot --clean
+```
+
+Next, create a personalised Github token: <https://github.com/settings/tokens/new?scopes=repo,write:packages>
+
+```sh
+export GITHUB_TOKEN="YOUR_GH_TOKEN"
+```
+
+Note: Due to how the Terraform registry works, it require the repo to be named in a certain way.
+For this reason, the builds are published via <https://github.com/liviate/terraform-provider-liviate/releases>
+
+To do this, add the following remote for publishing builds:
+
+```sh
+git remote add liviate git@github.com:liviate/terraform-provider-liviate.git
+```
+
+Finally tag the release, for example and push to Github:
+
+```sh
+git tag -a v0.5.0-pre -m "v0.5.0-pre Alpha Release for testing purposes"
+git push liviate v0.5.0-pre
+```
+
+Run goreleaser to release them:
+
+```sh
+goreleaser release --clean
+```
+
+Or, just release using:
+
+```sh
+goreleaser release
+```
+
+For testing or to push on other repos, you need to fix repo path in the
+`.goreleaser.yml` and run:
+
+```sh
+goreleaser release --clean --skip-validate
+```
+
+## History
+
+This codebase relicensed under APLv2 and donated to the Apache CloudStack
+project under an [IP
+clearance](https://github.com/apache/cloudstack/issues/5159) process and
+imported on 26th July 2021.
+
+## License
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at <http://www.apache.org/licenses/LICENSE-2.0>

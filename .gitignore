@@ -1,0 +1,9 @@
+# Terraform runtime / state
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+# local credentials
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl

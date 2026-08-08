@@ -1,0 +1,17 @@
+variable "liviate_api_key" {
+  description = "Liviate API key"
+  type        = string
+  sensitive   = true
+}
+
+variable "liviate_secret_key" {
+  description = "Liviate secret key"
+  type        = string
+  sensitive   = true
+}
+
+variable "zone_id" {
+  description = "Zone ID to deploy into"
+  type        = string
+  default     = ""
+}
