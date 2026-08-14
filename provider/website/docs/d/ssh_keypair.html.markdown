@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_ssh_keypair"
-sidebar_current: "docs-cloudstack-cloudstack_ssh_keypair"
+layout: "liviate"
+page_title: "Liviate: liviate_ssh_keypair"
+sidebar_current: "docs-liviate-liviate_ssh_keypair"
 description: |-
-  Gets information about cloudstack ssh keypair.
+  Gets information about liviate ssh keypair.
 ---
 
-# cloudstack_ssh_keypair
+# liviate_ssh_keypair
 
 Use this datasource to get information about a ssh keypair for use in other resources.
 
 ### Example Usage
 
 ```hcl
-  data "cloudstack_ssh_keypair" "ssh-keypair-data" {
+  data "liviate_ssh_keypair" "ssh-keypair-data" {
 	  filter {
 	  name = "name" 
 	  value = "myKey"

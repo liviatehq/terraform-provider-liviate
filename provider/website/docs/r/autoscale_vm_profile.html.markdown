@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_autoscale_vm_profile"
-sidebar_current: "docs-cloudstack-autoscale-vm-profile"
+layout: "liviate"
+page_title: "CloudStack: liviate_autoscale_vm_profile"
+sidebar_current: "docs-liviate-autoscale-vm-profile"
 description: |-
   Creates an autoscale VM profile.
 ---
 
-# cloudstack_autoscale_vm_profile
+# liviate_autoscale_vm_profile
 
 Creates an autoscale VM profile.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_autoscale_vm_profile" "profile1" {
+resource "liviate_autoscale_vm_profile" "profile1" {
   service_offering        = "small"
   template                = "CentOS 6.5"
   zone                    = "zone-1"

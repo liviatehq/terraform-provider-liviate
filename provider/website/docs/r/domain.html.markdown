@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_domain"
-sidebar_current: "docs-cloudstack-resource-domain"
+page_title: "CloudStack: liviate_domain"
+sidebar_current: "docs-liviate-resource-domain"
 description: |-
     Creates a Domain
 ---
 
-# CloudStack: cloudstack_domain
+# CloudStack: liviate_domain
 
-A `cloudstack_domain` resource manages a domain within CloudStack.
+A `liviate_domain` resource manages a domain within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_domain" "example" {
+resource "liviate_domain" "example" {
     name = "example-domain"
     network_domain = "example.local"
     parent_domain_id = "ROOT"
@@ -44,5 +44,5 @@ The following attributes are exported:
 Domains can be imported; use `<DOMAINID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_domain.example <DOMAINID>
+$ terraform import liviate_domain.example <DOMAINID>
 ```

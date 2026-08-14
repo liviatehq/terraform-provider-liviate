@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_domain Data Source"
-sidebar_current: "docs-cloudstack-datasource-domain"
+page_title: "CloudStack: liviate_domain Data Source"
+sidebar_current: "docs-liviate-datasource-domain"
 description: |-
     Retrieves information about a Domain
 ---
 
-# CloudStack: cloudstack_domain Data Source
+# CloudStack: liviate_domain Data Source
 
-A `cloudstack_domain` data source retrieves information about a domain within CloudStack.
+A `liviate_domain` data source retrieves information about a domain within CloudStack.
 
 ## Example Usage
 
 ```hcl
-data "cloudstack_domain" "my_domain" {
+data "liviate_domain" "my_domain" {
   filter {
     name = "name"
     value = "ROOT"

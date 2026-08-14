@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_port_forward"
-sidebar_current: "docs-cloudstack-resource-port-forward"
+layout: "liviate"
+page_title: "CloudStack: liviate_port_forward"
+sidebar_current: "docs-liviate-resource-port-forward"
 description: |-
   Creates port forwards.
 ---
 
-# cloudstack_port_forward
+# liviate_port_forward
 
 Creates port forwards.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_port_forward" "default" {
+resource "liviate_port_forward" "default" {
   ip_address_id = "30b21801-d4b3-4174-852b-0c0f30bdbbfb"
 
   forward {

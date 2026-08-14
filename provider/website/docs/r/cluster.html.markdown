@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_cluster"
-sidebar_current: "docs-cloudstack-resource-cluster"
+layout: "liviate"
+page_title: "CloudStack: liviate_cluster"
+sidebar_current: "docs-liviate-resource-cluster"
 description: |-
   Adds a new cluster
 ---
 
-# cloudstack_cluster
+# liviate_cluster
 
 Adds a new cluster
 
@@ -15,12 +15,12 @@ Adds a new cluster
 Basic usage:
 
 ```hcl
-resource "cloudstack_cluster" "example" {
+resource "liviate_cluster" "example" {
 	cluster_name = "example"
 	cluster_type = "CloudManaged"
 	hypervisor   = "KVM"
-	pod_id       = cloudstack_pod.example.id
-	zone_id      = cloudstack_zone.example.id
+	pod_id       = liviate_pod.example.id
+	zone_id      = liviate_zone.example.id
 }
 ```
 
@@ -63,5 +63,5 @@ Clusters can be imported; use `<CLUSTER ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_cluster.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_cluster.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

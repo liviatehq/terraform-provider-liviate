@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_vpn_connection"
-sidebar_current: "docs-cloudstack-cloudstack_vpn_connection"
+layout: "liviate"
+page_title: "Liviate: liviate_vpn_connection"
+sidebar_current: "docs-liviate-liviate_vpn_connection"
 description: |-
-  Gets information about cloudstack vpn connection.
+  Gets information about liviate vpn connection.
 ---
 
-# cloudstack_vpn_connection
+# liviate_vpn_connection
 
 Use this datasource to get information about a vpn connection for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_vpc" "vpc-data-source"{
+data "liviate_vpc" "vpc-data-source"{
     filter{
     name = "name"
     value= "test-vpc"

@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_quota_tariff"
-sidebar_current: "docs-cloudstack-datasource-quota-tariff"
+layout: "liviate"
+page_title: "CloudStack: liviate_quota_tariff"
+sidebar_current: "docs-liviate-datasource-quota-tariff"
 description: |-
   Gets information about CloudStack quota tariffs.
 ---
 
-# cloudstack_quota_tariff
+# liviate_quota_tariff
 
 Use this data source to retrieve information about quota tariffs in CloudStack. Quota tariffs define the pricing for different resource usage types.
 
@@ -14,23 +14,23 @@ Use this data source to retrieve information about quota tariffs in CloudStack. 
 
 ```hcl
 # Get all quota tariffs
-data "cloudstack_quota_tariff" "all_tariffs" {
+data "liviate_quota_tariff" "all_tariffs" {
 }
 
 # Get tariffs by name
-data "cloudstack_quota_tariff" "cpu_tariffs" {
+data "liviate_quota_tariff" "cpu_tariffs" {
   name = "CPU Tariff"
 }
 
 # Get tariffs by usage type
-data "cloudstack_quota_tariff" "compute_tariffs" {
+data "liviate_quota_tariff" "compute_tariffs" {
   usage_type = 1
 }
 
 # Output tariff information
 output "tariff_details" {
   value = [
-    for tariff in data.cloudstack_quota_tariff.all_tariffs.tariffs : {
+    for tariff in data.liviate_quota_tariff.all_tariffs.tariffs : {
       name  = tariff.name
       value = tariff.tariff_value
       unit  = tariff.usage_unit

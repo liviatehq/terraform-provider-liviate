@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_volume"
-sidebar_current: "docs-cloudstack-cloudstack_volume"
+layout: "liviate"
+page_title: "Liviate: liviate_volume"
+sidebar_current: "docs-liviate-liviate_volume"
 description: |-
-  Gets information about cloudstack volume.
+  Gets information about liviate volume.
 ---
 
-# cloudstack_volume
+# liviate_volume
 
 Use this datasource to get information about a volume for use in other resources.
 
 ### Example Usage
 
 ```hcl
-  data "cloudstack_volume" "volume-data-source"{
+  data "liviate_volume" "volume-data-source"{
     filter{
     name = "name"
     value="TestVolume"

@@ -1,25 +1,25 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_counter"
-sidebar_current: "docs-cloudstack-counter"
+layout: "liviate"
+page_title: "CloudStack: liviate_counter"
+sidebar_current: "docs-liviate-counter"
 description: |-
   Creates a counter for autoscale policies.
 ---
 
-# cloudstack_counter
+# liviate_counter
 
 Creates a counter that can be used in autoscale conditions to monitor performance metrics.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_counter" "cpu_counter" {
+resource "liviate_counter" "cpu_counter" {
   name   = "cpu-counter"
   source = "cpu"
   value  = "cpuused"
 }
 
-resource "cloudstack_counter" "memory_counter" {
+resource "liviate_counter" "memory_counter" {
   name   = "memory-counter" 
   source = "memory"
   value  = "memoryused"

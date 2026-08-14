@@ -1,21 +1,21 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_kubernetes_cluster"
-sidebar_current: "docs-cloudstack-resource-kubernetes_cluster"
+page_title: "CloudStack: liviate_kubernetes_cluster"
+sidebar_current: "docs-liviate-resource-kubernetes_cluster"
 description: |-
     Creates and manages a CloudStack Kubernetes Service (CKS) cluster
 ---
 
-# CloudStack: cloudstack_kubernetes_cluster
+# CloudStack: liviate_kubernetes_cluster
 
-A `cloudstack_kubernetes_cluster` resource manages a CloudStack Kubernetes Service (CKS) cluster within CloudStack. This resource supports advanced features including mixed node types, custom templates, CNI configurations, and autoscaling.
+A `liviate_kubernetes_cluster` resource manages a CloudStack Kubernetes Service (CKS) cluster within CloudStack. This resource supports advanced features including mixed node types, custom templates, CNI configurations, and autoscaling.
 
 ## Example Usage
 
 ### Basic Cluster
 
 ```hcl
-resource "cloudstack_kubernetes_cluster" "basic" {
+resource "liviate_kubernetes_cluster" "basic" {
   name               = "basic-cluster"
   zone               = "zone1"
   kubernetes_version = "1.25.0"
@@ -29,7 +29,7 @@ resource "cloudstack_kubernetes_cluster" "basic" {
 
 ```hcl
 # Kubernetes version resource
-resource "cloudstack_kubernetes_version" "k8s_v1_25" {
+resource "liviate_kubernetes_version" "k8s_v1_25" {
   semantic_version = "1.25.0"
   name             = "Kubernetes v1.25.0 with Calico"
   url              = "http://example.com/k8s-setup-v1.25.0.iso"
@@ -40,7 +40,7 @@ resource "cloudstack_kubernetes_version" "k8s_v1_25" {
 }
 
 # CNI configuration
-resource "cloudstack_cni_configuration" "calico" {
+resource "liviate_cni_configuration" "calico" {
   name       = "calico-cni-config"
   cni_config = base64encode(jsonencode({
     "name"       = "k8s-pod-network",
@@ -59,10 +59,10 @@ resource "cloudstack_cni_configuration" "calico" {
 }
 
 # Advanced cluster with mixed node types
-resource "cloudstack_kubernetes_cluster" "advanced" {
+resource "liviate_kubernetes_cluster" "advanced" {
   name               = "production-cluster"
   zone               = "zone1"
-  kubernetes_version = cloudstack_kubernetes_version.k8s_v1_25.semantic_version
+  kubernetes_version = liviate_kubernetes_version.k8s_v1_25.semantic_version
   service_offering   = "Medium Instance"
 
   # Cluster configuration
@@ -92,7 +92,7 @@ resource "cloudstack_kubernetes_cluster" "advanced" {
   }
 
   # CNI Configuration
-  cni_configuration_id = cloudstack_cni_configuration.calico.id
+  cni_configuration_id = liviate_cni_configuration.calico.id
   cni_config_details = {
     "CNI_MTU"               = "1450"
     "KUBERNETES_NODE_NAME"  = "spec.nodeName"
@@ -175,5 +175,5 @@ In addition to all arguments above, the following attributes are exported:
 Kubernetes clusters can be imported; use `<KUBERNETESCLUSTERID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_kubernetes_cluster.example <KUBERNETESCLUSTERID>
+$ terraform import liviate_kubernetes_cluster.example <KUBERNETESCLUSTERID>
 ```

@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_vpn_gateway"
-sidebar_current: "docs-cloudstack-resource-vpn-gateway"
+layout: "liviate"
+page_title: "CloudStack: liviate_vpn_gateway"
+sidebar_current: "docs-liviate-resource-vpn-gateway"
 description: |-
   Creates a site to site VPN local gateway.
 ---
 
-# cloudstack_vpn_gateway
+# liviate_vpn_gateway
 
 Creates a site to site VPN local gateway.
 
@@ -15,7 +15,7 @@ Creates a site to site VPN local gateway.
 Basic usage:
 
 ```hcl
-resource "cloudstack_vpn_gateway" "default" {
+resource "liviate_vpn_gateway" "default" {
   vpc_id = "f8141e2f-4e7e-4c63-9362-986c908b7ea7"
 }
 ```
@@ -40,5 +40,5 @@ VPC gateways can be imported; use `<VPN GATEWAY ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_vpn_gateway.default 49cf1821-3b9f-4627-be19-8a15ffec508d
+terraform import liviate_vpn_gateway.default 49cf1821-3b9f-4627-be19-8a15ffec508d
 ```

@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_firewall"
-sidebar_current: "docs-cloudstack-resource-firewall"
+layout: "liviate"
+page_title: "CloudStack: liviate_firewall"
+sidebar_current: "docs-liviate-resource-firewall"
 description: |-
   Creates firewall rules for a given IP address.
 ---
 
-# cloudstack_firewall
+# liviate_firewall
 
 Creates firewall rules for a given IP address.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_firewall" "default" {
+resource "liviate_firewall" "default" {
   ip_address_id = "30b21801-d4b3-4174-852b-0c0f30bdbbfb"
 
   rule {

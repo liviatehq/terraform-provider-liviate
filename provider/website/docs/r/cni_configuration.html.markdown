@@ -1,21 +1,21 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_cni_configuration"
-sidebar_current: "docs-cloudstack-resource-cni_configuration"
+page_title: "CloudStack: liviate_cni_configuration"
+sidebar_current: "docs-liviate-resource-cni_configuration"
 description: |-
     Creates and manages a CloudStack CNI (Container Network Interface) configuration
 ---
 
-# CloudStack: cloudstack_cni_configuration
+# CloudStack: liviate_cni_configuration
 
-A `cloudstack_cni_configuration` resource manages a Container Network Interface (CNI) configuration for CloudStack Kubernetes Service (CKS) clusters. CNI configurations define how network connectivity is provided to Kubernetes pods.
+A `liviate_cni_configuration` resource manages a Container Network Interface (CNI) configuration for CloudStack Kubernetes Service (CKS) clusters. CNI configurations define how network connectivity is provided to Kubernetes pods.
 
 ## Example Usage
 
 ### Basic Calico CNI Configuration
 
 ```hcl
-resource "cloudstack_cni_configuration" "calico" {
+resource "liviate_cni_configuration" "calico" {
   name       = "calico-cni-config"
   cni_config = base64encode(jsonencode({
     "name"       = "k8s-pod-network",
@@ -56,7 +56,7 @@ resource "cloudstack_cni_configuration" "calico" {
 ### Flannel CNI Configuration
 
 ```hcl
-resource "cloudstack_cni_configuration" "flannel" {
+resource "liviate_cni_configuration" "flannel" {
   name       = "flannel-cni-config"
   cni_config = base64encode(jsonencode({
     "name"       = "cbr0",
@@ -148,13 +148,13 @@ CloudStack supports various CNI plugins including:
 CNI configurations are used with Kubernetes clusters by referencing the configuration ID:
 
 ```hcl
-resource "cloudstack_kubernetes_cluster" "example" {
+resource "liviate_kubernetes_cluster" "example" {
   name                 = "example-cluster"
   zone                 = "zone1"
   kubernetes_version   = "1.25.0"
   service_offering     = "Medium Instance"
   
-  cni_configuration_id = cloudstack_cni_configuration.calico.id
+  cni_configuration_id = liviate_cni_configuration.calico.id
   cni_config_details = {
     "CNI_MTU"               = "1450"
     "KUBERNETES_NODE_NAME"  = "spec.nodeName"
@@ -168,5 +168,5 @@ resource "cloudstack_kubernetes_cluster" "example" {
 CNI configurations can be imported using the configuration ID:
 
 ```shell
-$ terraform import cloudstack_cni_configuration.example <CNI_CONFIGURATION_ID>
+$ terraform import liviate_cni_configuration.example <CNI_CONFIGURATION_ID>
 ```

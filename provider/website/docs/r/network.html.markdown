@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_network"
-sidebar_current: "docs-cloudstack-resource-network"
+layout: "liviate"
+page_title: "CloudStack: liviate_network"
+sidebar_current: "docs-liviate-resource-network"
 description: |-
   Creates a network.
 ---
 
-# cloudstack_network
+# liviate_network
 
 Creates a network.
 
@@ -15,7 +15,7 @@ Creates a network.
 Basic usage:
 
 ```hcl
-resource "cloudstack_network" "default" {
+resource "liviate_network" "default" {
   name             = "test-network"
   cidr             = "10.0.0.0/16"
   network_offering = "Default Network"
@@ -87,11 +87,11 @@ Networks can be imported; use `<NETWORK ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_network.default 36619b20-5584-43bf-9a84-e242bacd5582
+terraform import liviate_network.default 36619b20-5584-43bf-9a84-e242bacd5582
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_network.default my-project/36619b20-5584-43bf-9a84-e242bacd5582
+terraform import liviate_network.default my-project/36619b20-5584-43bf-9a84-e242bacd5582
 ```

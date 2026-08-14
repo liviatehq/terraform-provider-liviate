@@ -1,17 +1,17 @@
 ---
-page_title: "cloudstack_service_offering_constrained Resource"
+page_title: "liviate_service_offering_constrained Resource"
 description: |-
 	Provides a CloudStack Constrained Service Offering resource. This allows you to create and manage constrained compute offerings in CloudStack.
 ---
 
-# cloudstack_service_offering_constrained
+# liviate_service_offering_constrained
 
 Provides a CloudStack Constrained Service Offering resource. This resource allows you to create and manage service offerings with constrained CPU and memory parameters.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_service_offering_constrained" "example" {
+resource "liviate_service_offering_constrained" "example" {
 	display_text = "Example Constrained Offering"
 	name         = "example_constrained"
 

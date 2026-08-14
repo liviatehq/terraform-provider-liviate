@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_snapshot_policy"
-sidebar_current: "docs-cloudstack-resource-snapshot-policy"
+layout: "liviate"
+page_title: "CloudStack: liviate_snapshot_policy"
+sidebar_current: "docs-liviate-resource-snapshot-policy"
 description: |-
   Creates and manages snapshot policies for volumes.
 ---
 
-# cloudstack_snapshot_policy
+# liviate_snapshot_policy
 
 Provides a CloudStack snapshot policy resource. This can be used to create, modify, and delete snapshot policies for volumes.
 
@@ -15,13 +15,13 @@ Provides a CloudStack snapshot policy resource. This can be used to create, modi
 ### Basic Snapshot Policy
 
 ```hcl
-resource "cloudstack_snapshot_policy" "daily" {
-  volume_id     = cloudstack_disk.data.id
+resource "liviate_snapshot_policy" "daily" {
+  volume_id     = liviate_disk.data.id
   interval_type = "DAILY"
   max_snaps     = 7
   schedule      = "02:30"
   timezone      = "UTC"
-  zone_ids      = [data.cloudstack_zone.zone1.id]
+  zone_ids      = [data.liviate_zone.zone1.id]
 
   tags = {
     Environment = "production"
@@ -33,13 +33,13 @@ resource "cloudstack_snapshot_policy" "daily" {
 ### Hourly Snapshot Policy
 
 ```hcl
-resource "cloudstack_snapshot_policy" "hourly" {
-  volume_id     = cloudstack_disk.database.id
+resource "liviate_snapshot_policy" "hourly" {
+  volume_id     = liviate_disk.database.id
   interval_type = "HOURLY"
   max_snaps     = 6
   schedule      = "0"  # Top of every hour
   timezone      = "America/New_York"
-  zone_ids      = [data.cloudstack_zone.zone1.id]
+  zone_ids      = [data.liviate_zone.zone1.id]
   
   custom_id = "hourly-db-backup"
 }
@@ -48,15 +48,15 @@ resource "cloudstack_snapshot_policy" "hourly" {
 ### Multiple Zone Snapshot Policy
 
 ```hcl
-resource "cloudstack_snapshot_policy" "multi_zone" {
-  volume_id     = cloudstack_disk.shared.id
+resource "liviate_snapshot_policy" "multi_zone" {
+  volume_id     = liviate_disk.shared.id
   interval_type = "WEEKLY"
   max_snaps     = 4
   schedule      = "1:03:00"  # Monday at 3:00 AM
   timezone      = "UTC"
   zone_ids      = [
-    data.cloudstack_zone.zone1.id,
-    data.cloudstack_zone.zone2.id
+    data.liviate_zone.zone1.id,
+    data.liviate_zone.zone2.id
   ]
 }
 ```
@@ -64,13 +64,13 @@ resource "cloudstack_snapshot_policy" "multi_zone" {
 ### Monthly Archive Policy
 
 ```hcl
-resource "cloudstack_snapshot_policy" "monthly_archive" {
-  volume_id     = cloudstack_disk.archive.id
+resource "liviate_snapshot_policy" "monthly_archive" {
+  volume_id     = liviate_disk.archive.id
   interval_type = "MONTHLY"
   max_snaps     = 12
   schedule      = "1:01:00"  # 1st day of month at 1:00 AM
   timezone      = "UTC"
-  zone_ids      = [data.cloudstack_zone.zone1.id]
+  zone_ids      = [data.liviate_zone.zone1.id]
 
   tags = {
     Type        = "archive"

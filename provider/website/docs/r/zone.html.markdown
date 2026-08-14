@@ -1,18 +1,18 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_zone"
-sidebar_current: "docs-cloudstack-resource-zone"
+page_title: "CloudStack: liviate_zone"
+sidebar_current: "docs-liviate-resource-zone"
 description: |-
     Creates a Zone
 ---
 
-# CloudStack: cloudstack_zone
+# CloudStack: liviate_zone
 
-A `cloudstack_zone` resource manages a zone within CloudStack.
+A `liviate_zone` resource manages a zone within CloudStack.
 
 ## Example Usage
 ```hcl
-resource "cloudstack_zone" "example" {
+resource "liviate_zone" "example" {
     name = "example-zone"
     dns1 = "8.8.8.8"
     internal_dns1 = "8.8.4.4"
@@ -42,5 +42,5 @@ The following attributes are exported:
 
 Zones can be imported; use `<ZONEID>` as the import ID. For example:
 ```shell
-$ terraform import cloudstack_zone.example <ZONEID>
+$ terraform import liviate_zone.example <ZONEID>
 ```

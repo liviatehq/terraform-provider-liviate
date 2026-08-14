@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_autoscale_vm_group"
-sidebar_current: "docs-cloudstack-autoscale-vm-group"
+layout: "liviate"
+page_title: "CloudStack: liviate_autoscale_vm_group"
+sidebar_current: "docs-liviate-autoscale-vm-group"
 description: |-
   Creates an autoscale VM group.
 ---
 
-# cloudstack_autoscale_vm_group
+# liviate_autoscale_vm_group
 
 Creates an autoscale VM group that automatically scales virtual machines based on policies and load balancer rules.
 
@@ -14,43 +14,43 @@ Creates an autoscale VM group that automatically scales virtual machines based o
 
 ```hcl
 # Basic autoscale VM group
-resource "cloudstack_autoscale_vm_group" "vm_group" {
+resource "liviate_autoscale_vm_group" "vm_group" {
   name             = "web-server-autoscale"
-  lbrule_id        = cloudstack_loadbalancer_rule.lb.id
+  lbrule_id        = liviate_loadbalancer_rule.lb.id
   min_members      = 1
   max_members      = 5
-  vm_profile_id    = cloudstack_autoscale_vm_profile.profile.id
+  vm_profile_id    = liviate_autoscale_vm_profile.profile.id
   state            = "enable"  # or "disable"
   cleanup          = true # or false
   
   scaleup_policy_ids = [
-    cloudstack_autoscale_policy.scale_up_policy.id
+    liviate_autoscale_policy.scale_up_policy.id
   ]
   
   scaledown_policy_ids = [
-    cloudstack_autoscale_policy.scale_down_policy.id
+    liviate_autoscale_policy.scale_down_policy.id
   ]
 }
 
 # Autoscale VM group with optional parameters
-resource "cloudstack_autoscale_vm_group" "advanced_vm_group" {
+resource "liviate_autoscale_vm_group" "advanced_vm_group" {
   name             = "advanced-autoscale-group"
-  lbrule_id        = cloudstack_loadbalancer_rule.lb.id
+  lbrule_id        = liviate_loadbalancer_rule.lb.id
   min_members      = 2
   max_members      = 10
-  vm_profile_id    = cloudstack_autoscale_vm_profile.profile.id
+  vm_profile_id    = liviate_autoscale_vm_profile.profile.id
   interval         = 30    # Monitor every 30 seconds
   display          = true
   state            = "enable"
   cleanup          = false  # Keep VMs when deleting group
   
   scaleup_policy_ids = [
-    cloudstack_autoscale_policy.cpu_scale_up.id,
-    cloudstack_autoscale_policy.memory_scale_up.id
+    liviate_autoscale_policy.cpu_scale_up.id,
+    liviate_autoscale_policy.memory_scale_up.id
   ]
   
   scaledown_policy_ids = [
-    cloudstack_autoscale_policy.scale_down.id
+    liviate_autoscale_policy.scale_down.id
   ]
 }
 ```
@@ -107,5 +107,5 @@ This is useful for temporarily pausing autoscale behavior during maintenance or 
 Autoscale VM groups can be imported using the `id`, e.g.
 
 ```
-$ terraform import cloudstack_autoscale_vm_group.vm_group eb22f91-7454-4107-89f4-36afcdf33021
+$ terraform import liviate_autoscale_vm_group.vm_group eb22f91-7454-4107-89f4-36afcdf33021
 ```

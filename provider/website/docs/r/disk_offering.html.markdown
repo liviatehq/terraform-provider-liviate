@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_disk_offering"
-sidebar_current: "docs-cloudstack-resource-disk_offering"
+page_title: "CloudStack: liviate_disk_offering"
+sidebar_current: "docs-liviate-resource-disk_offering"
 description: |-
     Creates a Disk Offering
 ---
 
-# CloudStack: cloudstack_disk_offering
+# CloudStack: liviate_disk_offering
 
-A `cloudstack_disk_offering` resource manages a disk offering within CloudStack.
+A `liviate_disk_offering` resource manages a disk offering within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_disk_offering" "example" {
+resource "liviate_disk_offering" "example" {
     name = "example-disk-offering"
     display_text = "Example Disk Offering"
     disk_size = 100
@@ -43,5 +43,5 @@ The following attributes are exported:
 Disk offerings can be imported; use `<DISKOFFERINGID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_disk_offering.example <DISKOFFERINGID>
+$ terraform import liviate_disk_offering.example <DISKOFFERINGID>
 ```

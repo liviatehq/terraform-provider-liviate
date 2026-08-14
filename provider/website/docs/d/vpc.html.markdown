@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_vpc"
-sidebar_current: "docs-cloudstack-cloudstack_vpc"
+layout: "liviate"
+page_title: "Liviate: liviate_vpc"
+sidebar_current: "docs-liviate-liviate_vpc"
 description: |-
-  Gets information about cloudstack vpc.
+  Gets information about liviate vpc.
 ---
 
-# cloudstack_vpc
+# liviate_vpc
 
 Use this datasource to get information about a vpc for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_vpc" "vpc-data-source"{
+data "liviate_vpc" "vpc-data-source"{
     project = "project-1"
     filter{
     name = "name"

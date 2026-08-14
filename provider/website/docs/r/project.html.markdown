@@ -1,18 +1,18 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_project"
+layout: "liviate"
+page_title: "CloudStack: liviate_project"
 description: |-
   Creates a project.
 ---
 
-# cloudstack_project
+# liviate_project
 
 Creates a project.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_project" "myproject" {
+resource "liviate_project" "myproject" {
   name         = "terraform-project"
   display_text = "Terraform Managed Project"
   domain       = "root"
@@ -22,7 +22,7 @@ resource "cloudstack_project" "myproject" {
 ### With Account and User ID
 
 ```hcl
-resource "cloudstack_project" "myproject" {
+resource "liviate_project" "myproject" {
   name         = "terraform-project"
   display_text = "Terraform Managed Project"
   domain       = "root"
@@ -56,5 +56,5 @@ The following attributes are exported:
 Projects can be imported using the project ID, e.g.
 
 ```sh
-terraform import cloudstack_project.myproject 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_project.myproject 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

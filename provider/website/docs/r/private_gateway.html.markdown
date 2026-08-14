@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_private_gateway"
-sidebar_current: "docs-cloudstack-resource-private-gateway"
+layout: "liviate"
+page_title: "CloudStack: liviate_private_gateway"
+sidebar_current: "docs-liviate-resource-private-gateway"
 description: |-
   Creates a private gateway.
 ---
 
-# cloudstack_private_gateway
+# liviate_private_gateway
 
 Creates a private gateway for the given VPC.
 
@@ -15,7 +15,7 @@ Creates a private gateway for the given VPC.
 ## Example Usage
 
 ```hcl
-resource "cloudstack_private_gateway" "default" {
+resource "liviate_private_gateway" "default" {
   gateway    = "10.0.0.1"
   ip_address = "10.0.0.2"
   netmask    = "255.255.255.252"
@@ -63,5 +63,5 @@ Private gateways can be imported; use `<PRIVATE GATEWAY ID>` as the import ID. F
 example:
 
 ```shell
-terraform import cloudstack_private_gateway.default e42a24d2-46cb-4b18-9d41-382582fad309
+terraform import liviate_private_gateway.default e42a24d2-46cb-4b18-9d41-382582fad309
 ```

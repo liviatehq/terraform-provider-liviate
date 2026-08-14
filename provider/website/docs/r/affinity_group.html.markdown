@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_affinity_group"
-sidebar_current: "docs-cloudstack-resource-affinity-group"
+layout: "liviate"
+page_title: "CloudStack: liviate_affinity_group"
+sidebar_current: "docs-liviate-resource-affinity-group"
 description: |-
   Creates an affinity group.
 ---
 
-# cloudstack_affinity_group
+# liviate_affinity_group
 
 Creates an affinity group.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_affinity_group" "default" {
+resource "liviate_affinity_group" "default" {
   name = "test-affinity-group"
   type = "host anti-affinity"
 }
@@ -47,12 +47,12 @@ Affinity groups can be imported; use `<AFFINITY GROUP ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_affinity_group.default 6226ea4d-9cbe-4cc9-b30c-b9532146da5b
+terraform import liviate_affinity_group.default 6226ea4d-9cbe-4cc9-b30c-b9532146da5b
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_affinity_group.default my-project/6226ea4d-9cbe-4cc9-b30c-b9532146da5b
+terraform import liviate_affinity_group.default my-project/6226ea4d-9cbe-4cc9-b30c-b9532146da5b
 ```
 

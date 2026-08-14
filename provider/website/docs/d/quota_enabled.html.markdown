@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_quota_enabled"
-sidebar_current: "docs-cloudstack-datasource-quota-enabled"
+layout: "liviate"
+page_title: "CloudStack: liviate_quota_enabled"
+sidebar_current: "docs-liviate-datasource-quota-enabled"
 description: |-
   Checks if quota is enabled in CloudStack.
 ---
 
-# cloudstack_quota_enabled
+# liviate_quota_enabled
 
 Use this data source to check whether the quota system is enabled in the CloudStack management server.
 
@@ -14,12 +14,12 @@ Use this data source to check whether the quota system is enabled in the CloudSt
 
 ```hcl
 # Check if quota system is enabled
-data "cloudstack_quota_enabled" "quota_status" {
+data "liviate_quota_enabled" "quota_status" {
 }
 
 # Use the quota status in conditional logic
-resource "cloudstack_quota_tariff" "cpu_tariff" {
-  count = data.cloudstack_quota_enabled.quota_status.enabled ? 1 : 0
+resource "liviate_quota_tariff" "cpu_tariff" {
+  count = data.liviate_quota_enabled.quota_status.enabled ? 1 : 0
   
   name       = "CPU Usage Tariff"
   usage_type = 1

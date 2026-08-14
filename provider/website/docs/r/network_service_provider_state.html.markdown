@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_network_service_provider_state"
-sidebar_current: "docs-cloudstack-resource-network_service_provider_state"
+layout: "liviate"
+page_title: "CloudStack: liviate_network_service_provider_state"
+sidebar_current: "docs-liviate-resource-network_service_provider_state"
 description: |-
   Manage network service providers for a given physical network.
 ---
 
-# cloudstack_zone
+# liviate_zone
 
 Manage network service providers for a given physical network.  If Service Provider includes an underlying `Element` (configureInternalLoadBalancerElement, configureVirtualRouterElement) it will be configured.
 
@@ -15,41 +15,41 @@ Manage network service providers for a given physical network.  If Service Provi
 Basic usage:
 
 ```hcl
-resource "cloudstack_zone" "test" {
+resource "liviate_zone" "test" {
 	name          = "acctest"
 	dns1          = "8.8.8.8"
 	dns2          = "8.8.8.8"
 	internal_dns1 = "8.8.4.4"
 	internal_dns2 = "8.8.4.4"
 	network_type  = "Advanced"
-	domain        = "cloudstack.apache.org"
+	domain        = "liviate.com"
 }
-resource "cloudstack_physical_network" "test" {
+resource "liviate_physical_network" "test" {
 	broadcast_domain_range = "ZONE"
 	isolation_methods      = "VLAN"
 	name                   = "test01"
 	network_speed          = "1G"
 	tags                   = "vlan"
-	zone_id                = cloudstack_zone.test.id
+	zone_id                = liviate_zone.test.id
 }
-resource "cloudstack_network_service_provider_state" "virtualrouter" {
+resource "liviate_network_service_provider_state" "virtualrouter" {
     name                  = "VirtualRouter"
-    physical_network_id   = cloudstack_physical_network.test.id
+    physical_network_id   = liviate_physical_network.test.id
     enabled                 = true
 }
-resource "cloudstack_network_service_provider_state" "vpcvirtualrouter" {
+resource "liviate_network_service_provider_state" "vpcvirtualrouter" {
     name                  = "VpcVirtualRouter"
-    physical_network_id   = cloudstack_physical_network.test.id
+    physical_network_id   = liviate_physical_network.test.id
     enabled                 = true
 }
-resource "cloudstack_network_service_provider_state" "internallbvm" {
+resource "liviate_network_service_provider_state" "internallbvm" {
     name                  = "InternalLbVm"
-    physical_network_id   = cloudstack_physical_network.test.id
+    physical_network_id   = liviate_physical_network.test.id
     enabled                 = false
 }
-resource "cloudstack_network_service_provider_state" "configdrive" {
+resource "liviate_network_service_provider_state" "configdrive" {
     name                  = "ConfigDrive"
-    physical_network_id   = cloudstack_physical_network.test.id
+    physical_network_id   = liviate_physical_network.test.id
     enabled                 = false
 }
 ```
@@ -76,5 +76,5 @@ Network service providers can be imported; use `<ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_network_service_provider_state.example VirtualRouter 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_network_service_provider_state.example VirtualRouter 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_account"
-sidebar_current: "docs-cloudstack-resource-account"
+page_title: "CloudStack: liviate_account"
+sidebar_current: "docs-liviate-resource-account"
 description: |-
     Creates a Account
 ---
 
-# CloudStack: cloudstack_account
+# CloudStack: liviate_account
 
-A `cloudstack_account` resource manages an account within CloudStack.
+A `liviate_account` resource manages an account within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_account" "example" {
+resource "liviate_account" "example" {
     email = "user@example.com"
     first_name = "John"
     last_name = "Doe"
@@ -49,5 +49,5 @@ The following attributes are exported:
 Accounts can be imported; use `<ACCOUNTID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_account.example <ACCOUNTID>
+$ terraform import liviate_account.example <ACCOUNTID>
 ```

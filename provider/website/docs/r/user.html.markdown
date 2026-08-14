@@ -1,19 +1,19 @@
 ---
 layout: default
-title: "CloudStack: cloudstack_user"
-sidebar_current: "docs-cloudstack-resource-user"
+title: "CloudStack: liviate_user"
+sidebar_current: "docs-liviate-resource-user"
 description: |-
     Creates a User
 ---
 
-# CloudStack: cloudstack_user
+# CloudStack: liviate_user
 
-A `cloudstack_user` resource manages a user within CloudStack.
+A `liviate_user` resource manages a user within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_user" "example" {
+resource "liviate_user" "example" {
     account = "example-account"
     email = "user@example.com"
     first_name = "John"
@@ -44,5 +44,5 @@ No attributes are exported.
 Users can be imported; use `<USERID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_user.example <USERID>
+$ terraform import liviate_user.example <USERID>
 ```

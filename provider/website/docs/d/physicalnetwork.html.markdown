@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_physicalnetwork"
-sidebar_current: "docs-cloudstack-datasource-physicalnetwork"
+layout: "liviate"
+page_title: "CloudStack: liviate_physicalnetwork"
+sidebar_current: "docs-liviate-datasource-physicalnetwork"
 description: |-
   Gets information about a physical network.
 ---
 
-# cloudstack_physicalnetwork
+# liviate_physicalnetwork
 
 Use this data source to get information about a physical network.
 
 ## Example Usage
 
 ```hcl
-data "cloudstack_physicalnetwork" "default" {
+data "liviate_physicalnetwork" "default" {
   filter {
     name = "name"
     value = "test-physical-network"

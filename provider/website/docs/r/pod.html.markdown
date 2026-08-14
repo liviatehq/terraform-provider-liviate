@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_pod"
-sidebar_current: "docs-cloudstack-resource-pod"
+layout: "liviate"
+page_title: "CloudStack: liviate_pod"
+sidebar_current: "docs-liviate-resource-pod"
 description: |-
   Creates a new Pod.
 ---
 
-# cloudstack_pod
+# liviate_pod
 
 Creates a new Pod.
 
@@ -15,13 +15,13 @@ Creates a new Pod.
 Basic usage:
 
 ```hcl
-resource "cloudstack_pod" "example" {
+resource "liviate_pod" "example" {
 	allocation_state = "Disabled"
 	gateway          = "172.29.0.1"
 	name             = "example"
 	netmask          = "255.255.240.0"
 	start_ip         =  "172.29.0.2"
-	zone_id          =  cloudstack_zone.example.id
+	zone_id          =  liviate_zone.example.id
 }
 ```
 
@@ -52,5 +52,5 @@ A pod can be imported; use `<POD ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_pod.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_pod.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

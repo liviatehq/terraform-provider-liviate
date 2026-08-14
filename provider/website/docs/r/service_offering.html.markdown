@@ -1,21 +1,21 @@
 ---
 layout: default
-title: "CloudStack: cloudstack_service_offering"
-sidebar_current: "docs-cloudstack-resource-service_offering"
+title: "CloudStack: liviate_service_offering"
+sidebar_current: "docs-liviate-resource-service_offering"
 description: |-
     Creates a Service Offering
 ---
 
-# CloudStack: cloudstack_service_offering
+# CloudStack: liviate_service_offering
 
-A `cloudstack_service_offering` resource manages a service offering within CloudStack.
+A `liviate_service_offering` resource manages a service offering within CloudStack.
 
 ## Example Usage
 
 ### Basic Service Offering
 
 ```hcl
-resource "cloudstack_service_offering" "example" {
+resource "liviate_service_offering" "example" {
     name = "example-service-offering"
     display_text = "Example Service Offering"
     cpu_number = 2
@@ -26,7 +26,7 @@ resource "cloudstack_service_offering" "example" {
 ### GPU Service Offering
 
 ```hcl
-resource "cloudstack_service_offering" "gpu_offering" {
+resource "liviate_service_offering" "gpu_offering" {
     name = "gpu-a6000"
     display_text = "GPU A6000 Instance"
     cpu_number = 4
@@ -103,5 +103,5 @@ The following attributes are exported:
 Service offerings can be imported; use `<SERVICEOFFERINGID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_service_offering.example <SERVICEOFFERINGID>
+$ terraform import liviate_service_offering.example <SERVICEOFFERINGID>
 ```

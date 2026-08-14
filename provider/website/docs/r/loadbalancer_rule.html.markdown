@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_loadbalancer_rule"
-sidebar_current: "docs-cloudstack-resource-loadbalancer-rule"
+layout: "liviate"
+page_title: "CloudStack: liviate_loadbalancer_rule"
+sidebar_current: "docs-liviate-resource-loadbalancer-rule"
 description: |-
   Creates a load balancer rule.
 ---
 
-# cloudstack_loadbalancer_rule
+# liviate_loadbalancer_rule
 
 Creates a loadbalancer rule.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_loadbalancer_rule" "default" {
+resource "liviate_loadbalancer_rule" "default" {
   name          = "loadbalancer-rule-1"
   description   = "Loadbalancer rule 1"
   ip_address_id = "30b21801-d4b3-4174-852b-0c0f30bdbbfb"

@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_instance"
-sidebar_current: "docs-cloudstack-datasource-instance"
+layout: "liviate"
+page_title: "Liviate: liviate_instance"
+sidebar_current: "docs-liviate-datasource-instance"
 description: |-
-  Gets information about cloudstack instance.
+  Gets information about liviate instance.
 ---
 
-# cloudstack_instance
+# liviate_instance
 
 Use this datasource to get information about an instance for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_instance" "my_instance" {
+data "liviate_instance" "my_instance" {
   filter {
     name = "name" 
     value = "server-a"

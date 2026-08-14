@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_counter"
-sidebar_current: "docs-cloudstack-data-source-counter"
+layout: "liviate"
+page_title: "CloudStack: liviate_counter"
+sidebar_current: "docs-liviate-data-source-counter"
 description: |-
   Gets information about a CloudStack counter.
 ---
 
-# cloudstack_counter
+# liviate_counter
 
 Use this data source to get information about a CloudStack counter for use in autoscale conditions.
 
@@ -14,12 +14,12 @@ Use this data source to get information about a CloudStack counter for use in au
 
 ```hcl
 # Get counter by ID
-data "cloudstack_counter" "cpu_counter" {
+data "liviate_counter" "cpu_counter" {
   id = "959e11c0-8416-11f0-9a72-1e001b000238"
 }
 
 # Get counter by name
-data "cloudstack_counter" "memory_counter" {
+data "liviate_counter" "memory_counter" {
   filter {
     name  = "name" 
     value = "VM CPU - average percentage"
@@ -27,8 +27,8 @@ data "cloudstack_counter" "memory_counter" {
 }
 
 # Use in a condition
-resource "cloudstack_condition" "scale_up" {
-  counter_id          = data.cloudstack_counter.cpu_counter.id
+resource "liviate_condition" "scale_up" {
+  counter_id          = data.liviate_counter.cpu_counter.id
   relational_operator = "GT"
   threshold           = 80.0
   account_name        = "admin"

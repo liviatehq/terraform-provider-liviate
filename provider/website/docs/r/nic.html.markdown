@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_nic"
-sidebar_current: "docs-cloudstack-resource-nic"
+layout: "liviate"
+page_title: "CloudStack: liviate_nic"
+sidebar_current: "docs-liviate-resource-nic"
 description: |-
   Creates an additional NIC to add a VM to the specified network.
 ---
 
-# cloudstack_nic
+# liviate_nic
 
 Creates an additional NIC to add a VM to the specified network.
 
@@ -15,7 +15,7 @@ Creates an additional NIC to add a VM to the specified network.
 Basic usage:
 
 ```hcl
-resource "cloudstack_nic" "test" {
+resource "liviate_nic" "test" {
   network_id         = "6eb22f91-7454-4107-89f4-36afcdf33021"
   ip_address         = "192.168.1.1"
   virtual_machine_id = "f8141e2f-4e7e-4c63-9362-986c908b7ea7"
@@ -25,7 +25,7 @@ resource "cloudstack_nic" "test" {
 With MAC address:
 
 ```hcl
-resource "cloudstack_nic" "test" {
+resource "liviate_nic" "test" {
   network_id         = "6eb22f91-7454-4107-89f4-36afcdf33021"
   ip_address         = "192.168.1.1"
   mac_address        = "02:1a:4b:3c:5d:6e"

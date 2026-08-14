@@ -1,18 +1,18 @@
 ---
-page_title: "cloudstack_service_offering_unconstrained Resource"
+page_title: "liviate_service_offering_unconstrained Resource"
 sidebar_current: terraform-resource-service_offering_unconstrained
 description: |-
   Provides a CloudStack Service Offering (Unconstrained) resource. This resource allows you to create and manage unconstrained compute service offerings in CloudStack.
 ---
 
-# cloudstack_service_offering_unconstrained
+# liviate_service_offering_unconstrained
 
 Provides a CloudStack Service Offering (Unconstrained) resource. This resource allows you to create and manage unconstrained compute service offerings in CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_service_offering_unconstrained" "unconstrained1" {
+resource "liviate_service_offering_unconstrained" "unconstrained1" {
   name         = "unconstrained1"
   display_text = "unconstrained1"
   # Optional common attributes:
@@ -91,5 +91,5 @@ In addition to the arguments above, the following attributes are exported:
 Service offerings can be imported using the ID:
 
 ```sh
-terraform import cloudstack_service_offering_unconstrained.example <id>
+terraform import liviate_service_offering_unconstrained.example <id>
 ```

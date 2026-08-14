@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_template"
-sidebar_current: "docs-cloudstack-datasource-template"
+layout: "liviate"
+page_title: "Liviate: liviate_template"
+sidebar_current: "docs-liviate-datasource-template"
 description: |-
   Gets information about Cloudstack template.
 ---
 
-# cloudstack_template
+# liviate_template
 
 Use this datasource to get the ID of a template for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_template" "my_template" {
+data "liviate_template" "my_template" {
   template_filter = "featured"
 
   filter {

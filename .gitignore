@@ -1,9 +1,8 @@
-# Terraform runtime / state
-**/.terraform/
-*.tfstate
-*.tfstate.*
-*.tfplan
-# local credentials
+.terraform/
 *.tfvars
-!*.tfvars.example
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.exe
 .terraform.lock.hcl
+crash.log

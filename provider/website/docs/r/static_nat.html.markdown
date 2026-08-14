@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_static_nat"
-sidebar_current: "docs-cloudstack-resource-static-nat"
+layout: "liviate"
+page_title: "CloudStack: liviate_static_nat"
+sidebar_current: "docs-liviate-resource-static-nat"
 description: |-
   Enables static NAT for a given IP address.
 ---
 
-# cloudstack_static_nat
+# liviate_static_nat
 
 Enables static NAT for a given IP address
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_static_nat" "default" {
+resource "liviate_static_nat" "default" {
   ip_address_id      = "f8141e2f-4e7e-4c63-9362-986c908b7ea7"
   virtual_machine_id = "6ca2a163-bc68-429c-adc8-ab4a620b1bb3"
 }

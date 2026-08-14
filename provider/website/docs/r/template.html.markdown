@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_template"
-sidebar_current: "docs-cloudstack-resource-template"
+layout: "liviate"
+page_title: "CloudStack: liviate_template"
+sidebar_current: "docs-liviate-resource-template"
 description: |-
   Registers a template into the CloudStack cloud, including support for CloudStack Kubernetes Service (CKS) templates.
 ---
 
-# cloudstack_template
+# liviate_template
 
 Registers a template into the CloudStack cloud. This resource supports both regular VM templates and specialized templates for CloudStack Kubernetes Service (CKS) clusters.
 
@@ -15,7 +15,7 @@ Registers a template into the CloudStack cloud. This resource supports both regu
 ### Basic Template
 
 ```hcl
-resource "cloudstack_template" "centos64" {
+resource "liviate_template" "centos64" {
   name       = "CentOS 6.4 x64"
   format     = "VHD"
   hypervisor = "XenServer"
@@ -28,7 +28,7 @@ resource "cloudstack_template" "centos64" {
 ### CKS Template for Kubernetes
 
 ```hcl
-resource "cloudstack_template" "cks_ubuntu_template" {
+resource "liviate_template" "cks_ubuntu_template" {
   name         = "cks-ubuntu-2204-template"
   display_text = "CKS Ubuntu 22.04 Template for Kubernetes"
   url          = "http://example.com/cks-ubuntu-2204-kvm.qcow2.bz2"
@@ -159,7 +159,7 @@ When a `userdata_link` is configured, the following additional attributes are ex
 
 ```hcl
 # Create user data
-resource "cloudstack_userdata" "web_init" {
+resource "liviate_userdata" "web_init" {
   name = "web-server-initialization"
   
   userdata = base64encode(<<-EOF
@@ -176,7 +176,7 @@ resource "cloudstack_userdata" "web_init" {
 }
 
 # Create template with linked user data
-resource "cloudstack_template" "web_template" {
+resource "liviate_template" "web_template" {
   name         = "web-server-template"
   display_text = "Web Server Template with Auto-Setup"
   format       = "QCOW2"
@@ -186,15 +186,15 @@ resource "cloudstack_template" "web_template" {
   zone         = "zone1"
   
   userdata_link {
-    userdata_id     = cloudstack_userdata.web_init.id
+    userdata_id     = liviate_userdata.web_init.id
     userdata_policy = "ALLOWOVERRIDE"
   }
 }
 
 # Deploy instance using template with user data
-resource "cloudstack_instance" "web_server" {
+resource "liviate_instance" "web_server" {
   name     = "web-01"
-  template = cloudstack_template.web_template.id
+  template = liviate_template.web_template.id
   # ... other arguments ...
   
   # Pass parameters to the linked user data
@@ -208,7 +208,7 @@ resource "cloudstack_instance" "web_server" {
 
 ```hcl
 # Data source to use existing CKS template
-data "cloudstack_template" "cks_template" {
+data "liviate_template" "cks_template" {
   template_filter = "executable"
 
   filter {
@@ -218,15 +218,15 @@ data "cloudstack_template" "cks_template" {
 }
 
 # Use in Kubernetes cluster
-resource "cloudstack_kubernetes_cluster" "example" {
+resource "liviate_kubernetes_cluster" "example" {
   name               = "example-cluster"
   zone               = "zone1"
   kubernetes_version = "1.25.0"
   service_offering   = "Medium Instance"
   
   node_templates = {
-    "control" = data.cloudstack_template.cks_template.name
-    "worker"  = data.cloudstack_template.cks_template.name
+    "control" = data.liviate_template.cks_template.name
+    "worker"  = data.liviate_template.cks_template.name
   }
 }
 ```

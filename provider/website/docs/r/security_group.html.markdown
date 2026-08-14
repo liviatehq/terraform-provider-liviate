@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_security_group"
-sidebar_current: "docs-cloudstack-resource-security-group"
+layout: "liviate"
+page_title: "CloudStack: liviate_security_group"
+sidebar_current: "docs-liviate-resource-security-group"
 description: |-
   Creates a security group.
 ---
 
-# cloudstack_security_group
+# liviate_security_group
 
 Creates a security group.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_security_group" "default" {
+resource "liviate_security_group" "default" {
   name        = "allow_web"
   description = "Allow access to HTTP and HTTPS"
 }
@@ -44,11 +44,11 @@ Security groups can be imported; use `<SECURITY GROUP ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_security_group.default e54970f1-f563-46dd-a365-2b2e9b78c54b
+terraform import liviate_security_group.default e54970f1-f563-46dd-a365-2b2e9b78c54b
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_security_group.default my-project/e54970f1-f563-46dd-a365-2b2e9b78c54b
+terraform import liviate_security_group.default my-project/e54970f1-f563-46dd-a365-2b2e9b78c54b
 ```

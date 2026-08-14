@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_storage_pool"
-sidebar_current: "docs-cloudstack-resource-storage-pool"
+layout: "liviate"
+page_title: "CloudStack: liviate_storage_pool"
+sidebar_current: "docs-liviate-resource-storage-pool"
 description: |-
   Creates a storage pool.
 ---
 
-# cloudstack_storage_pool
+# liviate_storage_pool
 
 Creates a storage pool.
 
@@ -15,7 +15,7 @@ Creates a storage pool.
 Basic usage:
 
 ```hcl
-resource "cloudstack_storage_pool" "example" {
+resource "liviate_storage_pool" "example" {
 	name         = "example"
 	url          = "nfs://10.147.28.6/export/home/sandbox/primary11"
 	zone_id      = "0ed38eb3-f279-4951-ac20-fef39ebab20c"
@@ -56,5 +56,5 @@ Storage pools can be imported; use `<STORAGE POOL ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_storage_pool.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_storage_pool.example 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

@@ -1,18 +1,18 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_volume"
-sidebar_current: "docs-cloudstack-resource-volume"
+page_title: "CloudStack: liviate_volume"
+sidebar_current: "docs-liviate-resource-volume"
 description: |-
     Creates a Volume
 ---
-# CloudStack: cloudstack_volume
+# CloudStack: liviate_volume
 
-A `cloudstack_volume` resource manages a volume within CloudStack.
+A `liviate_volume` resource manages a volume within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_volume" "example" {
+resource "liviate_volume" "example" {
     name = "example-volume"
     disk_offering_id = "a6f7e5fb-1b9a-417e-a46e-7e3d715f34d3"
     zone_id = "b0fcd7cc-5e14-499d-a2ff-ecf49840f1ab"
@@ -41,5 +41,5 @@ The following attributes are exported:
 Volumes can be imported; use `<VOLUMEID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_volume.example <VOLUMEID>
+$ terraform import liviate_volume.example <VOLUMEID>
 ```

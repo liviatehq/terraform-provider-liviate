@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_kubernetes_version"
-sidebar_current: "docs-cloudstack-resource-kubernetes_version"
+page_title: "CloudStack: liviate_kubernetes_version"
+sidebar_current: "docs-liviate-resource-kubernetes_version"
 description: |-
     Creates a Kubernetes Version
 ---
 
-# CloudStack: cloudstack_kubernetes_version
+# CloudStack: liviate_kubernetes_version
 
-A `cloudstack_kubernetes_version` resource manages a Kubernetes version within CloudStack.
+A `liviate_kubernetes_version` resource manages a Kubernetes version within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_kubernetes_version" "example" {
+resource "liviate_kubernetes_version" "example" {
     semantic_version = "1.19.0"
     url = "https://example.com/k8s/1.19.0.tar.gz"
     min_cpu = 2
@@ -50,5 +50,5 @@ The following attributes are exported:
 Kubernetes versions can be imported using the ID of the resource; use `<KUBERNETESVERSIONID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_kubernetes_version.example <KUBERNETESVERSIONID>
+$ terraform import liviate_kubernetes_version.example <KUBERNETESVERSIONID>
 ```

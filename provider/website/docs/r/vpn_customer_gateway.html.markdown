@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_vpn_customer_gateway"
-sidebar_current: "docs-cloudstack-resource-vpn-customer-gateway"
+layout: "liviate"
+page_title: "CloudStack: liviate_vpn_customer_gateway"
+sidebar_current: "docs-liviate-resource-vpn-customer-gateway"
 description: |-
   Creates a site to site VPN local customer gateway.
 ---
 
-# cloudstack_vpn_customer_gateway
+# liviate_vpn_customer_gateway
 
 Creates a site to site VPN local customer gateway.
 
@@ -15,7 +15,7 @@ Creates a site to site VPN local customer gateway.
 Basic usage:
 
 ```hcl
-resource "cloudstack_vpn_customer_gateway" "default" {
+resource "liviate_vpn_customer_gateway" "default" {
   name       = "test-vpc"
   cidr       = "10.0.0.0/8"
   esp_policy = "aes256-sha1;modp1024"
@@ -67,11 +67,11 @@ VPN customer gateways can be imported; use `<VPN CUSTOMER GATEWAY ID>` as the im
 example:
 
 ```shell
-terraform import cloudstack_vpn_customer_gateway.default 741a7fca-1d05-4bb6-9290-1008300f0e5a
+terraform import liviate_vpn_customer_gateway.default 741a7fca-1d05-4bb6-9290-1008300f0e5a
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_vpn_customer_gateway.default my-project/741a7fca-1d05-4bb6-9290-1008300f0e5a
+terraform import liviate_vpn_customer_gateway.default my-project/741a7fca-1d05-4bb6-9290-1008300f0e5a
 ```

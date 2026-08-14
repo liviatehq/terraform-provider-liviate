@@ -1,11 +1,11 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_role"
+layout: "liviate"
+page_title: "CloudStack: liviate_role"
 description: |-
   Creates a role.
 ---
 
-# cloudstack_role
+# liviate_role
 
 Creates a role.
 
@@ -13,7 +13,7 @@ Creates a role.
 
 ```hcl
 # Create a role with a specific type
-resource "cloudstack_role" "admin" {
+resource "liviate_role" "admin" {
   name        = "Admin"
   type        = "Admin"
   description = "Administrator role"
@@ -21,7 +21,7 @@ resource "cloudstack_role" "admin" {
 }
 
 # Create a role by cloning an existing role
-resource "cloudstack_role" "custom_admin" {
+resource "liviate_role" "custom_admin" {
   name        = "CustomAdmin"
   role_id     = "12345678-1234-1234-1234-123456789012"
   description = "Custom administrator role cloned from an existing role"
@@ -50,4 +50,4 @@ The following attributes are exported:
 Roles can be imported using the role ID, e.g.
 
 ```
-terraform import cloudstack_role.admin 12345678-1234-1234-1234-123456789012
+terraform import liviate_role.admin 12345678-1234-1234-1234-123456789012

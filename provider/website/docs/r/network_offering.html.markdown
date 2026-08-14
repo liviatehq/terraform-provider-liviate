@@ -1,19 +1,19 @@
 ---
 layout: default
-page_title: "CloudStack: cloudstack_network_offering"
-sidebar_current: "docs-cloudstack-resource-network_offering"
+page_title: "CloudStack: liviate_network_offering"
+sidebar_current: "docs-liviate-resource-network_offering"
 description: |-
     Creates a Network Offering
 ---
 
-# CloudStack: cloudstack_network_offering
+# CloudStack: liviate_network_offering
 
-A `cloudstack_network_offering` resource manages a network offering within CloudStack.
+A `liviate_network_offering` resource manages a network offering within CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_network_offering" "example" {
+resource "liviate_network_offering" "example" {
     name = "example-network-offering"
     display_text = "Example Network Offering"
     guest_ip_type = "Isolated"
@@ -76,5 +76,5 @@ The following attributes are exported:
 Network offerings can be imported; use `<NETWORKOFFERINGID>` as the import ID. For example:
 
 ```shell
-$ terraform import cloudstack_network_offering.example <NETWORKOFFERINGID>
+$ terraform import liviate_network_offering.example <NETWORKOFFERINGID>
 ```

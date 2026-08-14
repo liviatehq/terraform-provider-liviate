@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_ipaddress"
-sidebar_current: "docs-cloudstack-cloudstack_ipaddress"
+layout: "liviate"
+page_title: "Liviate: liviate_ipaddress"
+sidebar_current: "docs-liviate-liviate_ipaddress"
 description: |-
-  Gets information about cloudstack ipaddress.
+  Gets information about liviate ipaddress.
 ---
 
-# cloudstack_ipaddress
+# liviate_ipaddress
 
 Use this datasource to get information about a public ipaddress for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_ipaddress" "ipaddress-data-source"{
+data "liviate_ipaddress" "ipaddress-data-source"{
     filter{
     name = "zone_name"
     value= "DC"

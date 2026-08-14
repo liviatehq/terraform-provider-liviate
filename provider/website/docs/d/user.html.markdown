@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_user"
-sidebar_current: "docs-cloudstack-cloudstack_user"
+layout: "liviate"
+page_title: "Liviate: liviate_user"
+sidebar_current: "docs-liviate-liviate_user"
 description: |-
-  Gets information about cloudstack user.
+  Gets information about liviate user.
 ---
 
-# cloudstack_user
+# liviate_user
 
-Use this datasource to get information about a cloudstack user for use in other resources.
+Use this datasource to get information about a liviate user for use in other resources.
 
 ### Example Usage
 
 ```hcl
-data "cloudstack_user" "user-data-source"{
+data "liviate_user" "user-data-source"{
     filter{
     name = "first_name"
     value= "jon"

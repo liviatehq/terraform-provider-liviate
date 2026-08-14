@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_condition"
-sidebar_current: "docs-cloudstack-data-source-condition"
+layout: "liviate"
+page_title: "CloudStack: liviate_condition"
+sidebar_current: "docs-liviate-data-source-condition"
 description: |-
   Gets information about a CloudStack autoscale condition.
 ---
 
-# cloudstack_condition
+# liviate_condition
 
 Use this data source to get information about a CloudStack autoscale condition.
 
@@ -14,12 +14,12 @@ Use this data source to get information about a CloudStack autoscale condition.
 
 ```hcl
 # Get condition by ID
-data "cloudstack_condition" "existing_condition" {
+data "liviate_condition" "existing_condition" {
   id = "c2f0591b-ce9b-499a-81f2-8fc6318b0c72"
 }
 
 # Get condition by filter
-data "cloudstack_condition" "cpu_condition" {
+data "liviate_condition" "cpu_condition" {
   filter {
     name  = "threshold"
     value = "80"
@@ -27,12 +27,12 @@ data "cloudstack_condition" "cpu_condition" {
 }
 
 # Use in a policy
-resource "cloudstack_autoscale_policy" "scale_policy" {
+resource "liviate_autoscale_policy" "scale_policy" {
   name         = "scale-up-policy"
   action       = "scaleup"
   duration     = 300
   quiet_time   = 300
-  condition_ids = [data.cloudstack_condition.existing_condition.id]
+  condition_ids = [data.liviate_condition.existing_condition.id]
 }
 ```
 

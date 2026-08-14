@@ -1,25 +1,25 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_traffic_type"
-sidebar_current: "docs-cloudstack-resource-traffic-type"
+layout: "liviate"
+page_title: "CloudStack: liviate_traffic_type"
+sidebar_current: "docs-liviate-resource-traffic-type"
 description: |-
   Adds a traffic type to a physical network.
 ---
 
-# cloudstack_traffic_type
+# liviate_traffic_type
 
 Adds a traffic type to a physical network.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_physicalnetwork" "default" {
+resource "liviate_physicalnetwork" "default" {
   name = "test-physical-network"
   zone = "zone-name"
 }
 
-resource "cloudstack_traffic_type" "management" {
-  physical_network_id = cloudstack_physicalnetwork.default.id
+resource "liviate_traffic_type" "management" {
+  physical_network_id = liviate_physicalnetwork.default.id
   type                = "Management"
   
   kvm_network_label    = "cloudbr0"
@@ -27,8 +27,8 @@ resource "cloudstack_traffic_type" "management" {
   vmware_network_label = "VM Network"
 }
 
-resource "cloudstack_traffic_type" "guest" {
-  physical_network_id = cloudstack_physicalnetwork.default.id
+resource "liviate_traffic_type" "guest" {
+  physical_network_id = liviate_physicalnetwork.default.id
   type                = "Guest"
   
   kvm_network_label    = "cloudbr1"
@@ -61,5 +61,5 @@ The following attributes are exported:
 Traffic types can be imported using the traffic type ID, e.g.
 
 ```shell
-terraform import cloudstack_traffic_type.management 5fb307e2-0e11-11ee-be56-0242ac120002
+terraform import liviate_traffic_type.management 5fb307e2-0e11-11ee-be56-0242ac120002
 ```

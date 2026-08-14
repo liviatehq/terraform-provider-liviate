@@ -1,18 +1,18 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_cluster"
+layout: "liviate"
+page_title: "CloudStack: liviate_cluster"
 description: |-
   Gets information about a cluster.
 ---
 
-# cloudstack_cluster
+# liviate_cluster
 
 Use this data source to get information about a cluster for use in other resources.
 
 ## Example Usage
 
 ```hcl
-data "cloudstack_cluster" "cluster" {
+data "liviate_cluster" "cluster" {
   filter {
     name = "name"
     value = "cluster-1"
@@ -20,7 +20,7 @@ data "cloudstack_cluster" "cluster" {
 }
 
 output "cluster_id" {
-  value = data.cloudstack_cluster.cluster.id
+  value = data.liviate_cluster.cluster.id
 }
 ```
 

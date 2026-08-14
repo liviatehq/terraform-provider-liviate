@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_autoscale_vm_group"
-sidebar_current: "docs-cloudstack-data-source-autoscale-vm-group"
+layout: "liviate"
+page_title: "CloudStack: liviate_autoscale_vm_group"
+sidebar_current: "docs-liviate-data-source-autoscale-vm-group"
 description: |-
   Gets information about a CloudStack autoscale VM group.
 ---
 
-# cloudstack_autoscale_vm_group
+# liviate_autoscale_vm_group
 
 Use this data source to get information about a CloudStack autoscale VM group.
 
@@ -14,12 +14,12 @@ Use this data source to get information about a CloudStack autoscale VM group.
 
 ```hcl
 # Get autoscale VM group by ID
-data "cloudstack_autoscale_vm_group" "existing_group" {
+data "liviate_autoscale_vm_group" "existing_group" {
   id = "156a819a-dec1-4166-aab3-657c271fa4a3"
 }
 
 # Get autoscale VM group by name
-data "cloudstack_autoscale_vm_group" "web_group" {
+data "liviate_autoscale_vm_group" "web_group" {
   filter {
     name  = "name"
     value = "web-server-autoscale"
@@ -28,11 +28,11 @@ data "cloudstack_autoscale_vm_group" "web_group" {
 
 # Output information about the group
 output "autoscale_group_state" {
-  value = data.cloudstack_autoscale_vm_group.existing_group.state
+  value = data.liviate_autoscale_vm_group.existing_group.state
 }
 
 output "current_members" {
-  value = "Min: ${data.cloudstack_autoscale_vm_group.existing_group.min_members}, Max: ${data.cloudstack_autoscale_vm_group.existing_group.max_members}"
+  value = "Min: ${data.liviate_autoscale_vm_group.existing_group.min_members}, Max: ${data.liviate_autoscale_vm_group.existing_group.max_members}"
 }
 ```
 

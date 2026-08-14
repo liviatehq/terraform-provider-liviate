@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_project"
-sidebar_current: "docs-cloudstack-cloudstack_project"
+layout: "liviate"
+page_title: "CloudStack: liviate_project"
+sidebar_current: "docs-liviate-liviate_project"
 description: |-
   Gets information about CloudStack projects.
 ---
 
-# cloudstack_project
+# liviate_project
 
 Use this datasource to get information about a CloudStack project for use in other resources.
 
@@ -15,7 +15,7 @@ Use this datasource to get information about a CloudStack project for use in oth
 ### Basic Usage
 
 ```hcl
-data "cloudstack_project" "my_project" {
+data "liviate_project" "my_project" {
   filter {
     name = "name"
     value = "my-project"
@@ -26,7 +26,7 @@ data "cloudstack_project" "my_project" {
 ### With Multiple Filters
 
 ```hcl
-data "cloudstack_project" "admin_project" {
+data "liviate_project" "admin_project" {
   filter {
     name = "name"
     value = "admin-project"

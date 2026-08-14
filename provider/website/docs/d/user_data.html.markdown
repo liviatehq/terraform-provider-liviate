@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_user_data"
-sidebar_current: "docs-cloudstack-datasource-user-data"
+layout: "liviate"
+page_title: "CloudStack: liviate_user_data"
+sidebar_current: "docs-liviate-datasource-user-data"
 description: |-
   Get information about a CloudStack user data.
 ---
 
-# cloudstack_user_data
+# liviate_user_data
 
 Use this data source to retrieve information about a CloudStack user data by either its name or ID.
 
@@ -15,7 +15,7 @@ Use this data source to retrieve information about a CloudStack user data by eit
 ### Find User Data by Name
 
 ```hcl
-data "cloudstack_user_data" "web_init" {
+data "liviate_user_data" "web_init" {
   filter {
     name  = "name"
     value = "web-server-init"
@@ -23,9 +23,9 @@ data "cloudstack_user_data" "web_init" {
 }
 
 # Use the user data in an instance
-resource "cloudstack_instance" "web" {
+resource "liviate_instance" "web" {
   name        = "web-server"
-  userdata_id = data.cloudstack_user_data.web_init.id
+  userdata_id = data.liviate_user_data.web_init.id
   # ... other arguments ...
 }
 ```
@@ -33,7 +33,7 @@ resource "cloudstack_instance" "web" {
 ### Find User Data by ID
 
 ```hcl
-data "cloudstack_user_data" "app_init" {
+data "liviate_user_data" "app_init" {
   filter {
     name  = "id"
     value = "12345678-1234-1234-1234-123456789012"
@@ -44,7 +44,7 @@ data "cloudstack_user_data" "app_init" {
 ### Find Project-Scoped User Data
 
 ```hcl
-data "cloudstack_user_data" "project_init" {
+data "liviate_user_data" "project_init" {
   project = "my-project"
   
   filter {
@@ -90,7 +90,7 @@ The following attributes are exported:
 
 ```hcl
 # Find existing user data
-data "cloudstack_user_data" "app_bootstrap" {
+data "liviate_user_data" "app_bootstrap" {
   filter {
     name  = "name"
     value = "application-bootstrap"
@@ -98,24 +98,24 @@ data "cloudstack_user_data" "app_bootstrap" {
 }
 
 # Use with template
-resource "cloudstack_template" "app_template" {
+resource "liviate_template" "app_template" {
   name         = "application-template"
   display_text = "Application Template with Bootstrap"
   # ... other template arguments ...
   
   userdata_link {
-    userdata_id     = data.cloudstack_user_data.app_bootstrap.id
+    userdata_id     = data.liviate_user_data.app_bootstrap.id
     userdata_policy = "ALLOWOVERRIDE"
   }
 }
 
 # Deploy instance with parameterized user data
-resource "cloudstack_instance" "app_server" {
+resource "liviate_instance" "app_server" {
   name     = "app-server-01"
-  template = cloudstack_template.app_template.id
+  template = liviate_template.app_template.id
   # ... other instance arguments ...
   
-  userdata_id = data.cloudstack_user_data.app_bootstrap.id
+  userdata_id = data.liviate_user_data.app_bootstrap.id
   
   userdata_details = {
     "environment" = "production"

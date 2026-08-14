@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_egress_firewall"
-sidebar_current: "docs-cloudstack-resource-egress-firewall"
+layout: "liviate"
+page_title: "CloudStack: liviate_egress_firewall"
+sidebar_current: "docs-liviate-resource-egress-firewall"
 description: |-
   Creates egress firewall rules for a given network.
 ---
 
-# cloudstack_egress_firewall
+# liviate_egress_firewall
 
 Creates egress firewall rules for a given network.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_egress_firewall" "default" {
+resource "liviate_egress_firewall" "default" {
   network_id = "6eb22f91-7454-4107-89f4-36afcdf33021"
 
   rule {

@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_zone"
-sidebar_current: "docs-cloudstack-cloudstack_zone"
+layout: "liviate"
+page_title: "Liviate: liviate_zone"
+sidebar_current: "docs-liviate-liviate_zone"
 description: |-
-  Gets information about cloudstack zone.
+  Gets information about liviate zone.
 ---
 
-# cloudstack_zone
+# liviate_zone
 
 Use this datasource to get information about a zone for use in other resources.
 
 ### Example Usage
 
 ```hcl
-  data "cloudstack_zone" "zone-data-source"{
+  data "liviate_zone" "zone-data-source"{
     filter{
     name = "name"
     value="TestZone"

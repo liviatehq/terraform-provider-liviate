@@ -30,8 +30,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-mux/tf5to6server"
-	"github.com/liviate/terraform-provider-liviate/cloudstack"
+	"github.com/liviate/terraform-provider-liviate/liviate"
 )
+
+var version = "dev"
+var commit = "unknown"
 
 func main() {
 	ctx := context.Background()
@@ -43,7 +46,7 @@ func main() {
 
 	updatedSdkServer, err := tf5to6server.UpgradeServer(
 		ctx,
-		cloudstack.Provider().GRPCProvider,
+		liviate.Provider().GRPCProvider,
 	)
 
 	if err != nil {
@@ -51,7 +54,7 @@ func main() {
 	}
 
 	providers := []func() tfprotov6.ProviderServer{
-		providerserver.NewProtocol6(cloudstack.New()),
+		providerserver.NewProtocol6(liviate.New()),
 		func() tfprotov6.ProviderServer {
 			return updatedSdkServer
 		},

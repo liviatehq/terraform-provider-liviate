@@ -1,18 +1,18 @@
 ---
-page_title: "cloudstack_service_offering_fixed Resource"
+page_title: "liviate_service_offering_fixed Resource"
 sidebar_current: terraform-resource-service_offering_fixed
 description: |-
   Provides a CloudStack Service Offering (Fixed) resource. This resource allows you to create and manage fixed compute service offerings in CloudStack.
 ---
 
-# cloudstack_service_offering_fixed
+# liviate_service_offering_fixed
 
 Provides a CloudStack Service Offering (Fixed) resource. This resource allows you to create and manage fixed compute service offerings in CloudStack.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_service_offering_fixed" "fixed1" {
+resource "liviate_service_offering_fixed" "fixed1" {
   name         = "fixed1"
   display_text = "fixed1"
   cpu_number   = 2
@@ -97,5 +97,5 @@ In addition to the arguments above, the following attributes are exported:
 Service offerings can be imported using the ID:
 
 ```sh
-terraform import cloudstack_service_offering_fixed.example <id>
+terraform import liviate_service_offering_fixed.example <id>
 ```

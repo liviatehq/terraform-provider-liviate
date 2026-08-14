@@ -29,8 +29,8 @@ permissions:
   contents: read
 
 env:
-  CLOUDSTACK_API_URL: http://localhost:8080/client/api
-  CLOUDSTACK_VERSIONS: "['4.20.2.0', '4.22.0.0']"
+  LIVIATE_API_URL: http://localhost:8080/client/api
+  LIVIATE_VERSIONS: "['4.20.2.0', '4.22.0.0']"
 
 jobs:
   prepare-matrix:
@@ -41,7 +41,7 @@ jobs:
       - name: Set versions
         id: set-versions
         run: |
-          echo "cloudstack-versions=${{ env.CLOUDSTACK_VERSIONS }}" >> $GITHUB_OUTPUT
+          echo "cloudstack-versions=${{ env.LIVIATE_VERSIONS }}" >> $GITHUB_OUTPUT
 
   acceptance-terraform:
     name: Terraform ${{ matrix.terraform-version }} with Cloudstack ${{ matrix.cloudstack-version }}
@@ -64,9 +64,9 @@ jobs:
           terraform_wrapper: false
       - name: Run acceptance test
         env:
-          CLOUDSTACK_USER_ID: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_USER_ID }}
-          CLOUDSTACK_API_KEY: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_API_KEY }}
-          CLOUDSTACK_SECRET_KEY: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_SECRET_KEY }}
+          LIVIATE_USER_ID: ${{ steps.setup-cloudstack.outputs.LIVIATE_USER_ID }}
+          LIVIATE_API_KEY: ${{ steps.setup-cloudstack.outputs.LIVIATE_API_KEY }}
+          LIVIATE_SECRET_KEY: ${{ steps.setup-cloudstack.outputs.LIVIATE_SECRET_KEY }}
         run: |
           make testacc
     services:
@@ -104,9 +104,9 @@ jobs:
           tofu_wrapper: false
       - name: Run acceptance test
         env:
-          CLOUDSTACK_USER_ID: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_USER_ID }}
-          CLOUDSTACK_API_KEY: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_API_KEY }}
-          CLOUDSTACK_SECRET_KEY: ${{ steps.setup-cloudstack.outputs.CLOUDSTACK_SECRET_KEY }}
+          LIVIATE_USER_ID: ${{ steps.setup-cloudstack.outputs.LIVIATE_USER_ID }}
+          LIVIATE_API_KEY: ${{ steps.setup-cloudstack.outputs.LIVIATE_API_KEY }}
+          LIVIATE_SECRET_KEY: ${{ steps.setup-cloudstack.outputs.LIVIATE_SECRET_KEY }}
           TF_ACC_PROVIDER_NAMESPACE: hashicorp
           TF_ACC_PROVIDER_HOST: registry.opentofu.org
         run: |

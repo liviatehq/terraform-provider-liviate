@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_quota_tariff"
-sidebar_current: "docs-cloudstack-resource-quota-tariff"
+layout: "liviate"
+page_title: "CloudStack: liviate_quota_tariff"
+sidebar_current: "docs-liviate-resource-quota-tariff"
 description: |-
   Creates and manages CloudStack quota tariffs.
 ---
 
-# cloudstack_quota_tariff
+# liviate_quota_tariff
 
 Provides a CloudStack quota tariff resource. This can be used to create, modify, and delete quota tariffs.
 
@@ -14,7 +14,7 @@ Provides a CloudStack quota tariff resource. This can be used to create, modify,
 
 ```hcl
 # Create a CPU usage tariff
-resource "cloudstack_quota_tariff" "cpu_tariff" {
+resource "liviate_quota_tariff" "cpu_tariff" {
   name        = "CPU Usage Tariff"
   usage_type  = 1
   value       = 0.05
@@ -22,7 +22,7 @@ resource "cloudstack_quota_tariff" "cpu_tariff" {
 }
 
 # Create a memory usage tariff with date range
-resource "cloudstack_quota_tariff" "memory_tariff" {
+resource "liviate_quota_tariff" "memory_tariff" {
   name           = "Memory Usage Tariff"
   usage_type     = 2
   value          = 0.01
@@ -33,7 +33,7 @@ resource "cloudstack_quota_tariff" "memory_tariff" {
 }
 
 # Create a storage tariff
-resource "cloudstack_quota_tariff" "storage_tariff" {
+resource "liviate_quota_tariff" "storage_tariff" {
   name        = "Primary Storage Tariff"
   usage_type  = 6
   value       = 0.1
@@ -82,5 +82,5 @@ In addition to all arguments above, the following attributes are exported:
 Quota tariffs can be imported using the tariff ID:
 
 ```
-$ terraform import cloudstack_quota_tariff.cpu_tariff 12345678-1234-1234-1234-123456789abc
+$ terraform import liviate_quota_tariff.cpu_tariff 12345678-1234-1234-1234-123456789abc
 ```

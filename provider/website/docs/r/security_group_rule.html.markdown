@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_security_group_rule"
-sidebar_current: "docs-cloudstack-resource-security-group-rule"
+layout: "liviate"
+page_title: "CloudStack: liviate_security_group_rule"
+sidebar_current: "docs-liviate-resource-security-group-rule"
 description: |-
   Authorizes and revokes both ingress and egress rulea for a given security group.
 ---
 
-# cloudstack_security_group_rule
+# liviate_security_group_rule
 
 Authorizes and revokes both ingress and egress rulea for a given security group.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_security_group_rule" "web" {
+resource "liviate_security_group_rule" "web" {
   security_group_id = "e340b62b-fbc2-4081-8f67-e40455c44bce"
 
   rule {

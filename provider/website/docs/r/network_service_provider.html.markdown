@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_network_service_provider"
-sidebar_current: "docs-cloudstack-resource-network-service-provider"
+layout: "liviate"
+page_title: "CloudStack: liviate_network_service_provider"
+sidebar_current: "docs-liviate-resource-network-service-provider"
 description: |-
   Adds a network service provider to a physical network.
 ---
 
-# cloudstack_network_service_provider
+# liviate_network_service_provider
 
 Adds or updates a network service provider on a physical network.
 
@@ -19,27 +19,27 @@ Adds or updates a network service provider on a physical network.
 ## Example Usage
 
 ```hcl
-resource "cloudstack_physicalnetwork" "default" {
+resource "liviate_physicalnetwork" "default" {
   name = "test-physical-network"
   zone = "zone-name"
 }
 
-resource "cloudstack_network_service_provider" "virtualrouter" {
+resource "liviate_network_service_provider" "virtualrouter" {
   name                = "VirtualRouter"
-  physical_network_id = cloudstack_physicalnetwork.default.id
+  physical_network_id = liviate_physicalnetwork.default.id
   service_list        = ["Dhcp", "Dns", "Firewall", "LoadBalancer", "SourceNat", "StaticNat", "PortForwarding", "Vpn"]
   state               = "Enabled"
 }
 
-resource "cloudstack_network_service_provider" "vpcvirtualrouter" {
+resource "liviate_network_service_provider" "vpcvirtualrouter" {
   name                = "VpcVirtualRouter"
-  physical_network_id = cloudstack_physicalnetwork.default.id
+  physical_network_id = liviate_physicalnetwork.default.id
   service_list        = ["Dhcp", "Dns", "SourceNat", "StaticNat", "NetworkACL", "PortForwarding", "Lb", "UserData", "Vpn"]
 }
 
-resource "cloudstack_network_service_provider" "securitygroup" {
+resource "liviate_network_service_provider" "securitygroup" {
   name                = "SecurityGroupProvider"
-  physical_network_id = cloudstack_physicalnetwork.default.id
+  physical_network_id = liviate_physicalnetwork.default.id
   # Note: service_list is predefined for SecurityGroupProvider
   state               = "Enabled"  # Optional: providers are created in "Disabled" state by default
 }
@@ -67,5 +67,5 @@ The following attributes are exported:
 Network service providers can be imported using the network service provider ID, e.g.
 
 ```shell
-terraform import cloudstack_network_service_provider.virtualrouter 5fb307e2-0e11-11ee-be56-0242ac120002
+terraform import liviate_network_service_provider.virtualrouter 5fb307e2-0e11-11ee-be56-0242ac120002
 ```

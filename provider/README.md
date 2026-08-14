@@ -195,9 +195,9 @@ terraform {
 
 provider "liviate" {
   # Configuration options
-  api_url    = var.LIVIATE_API_URL
-  api_key    = var.LIVIATE_API_KEY
-  secret_key = var.LIVIATE_SECRET_KEY
+  api_url    = var.liviate_api_url
+  api_key    = var.liviate_api_key
+  secret_key = var.liviate_secret_key
 }
 
 resource "liviate_instance" "web" {

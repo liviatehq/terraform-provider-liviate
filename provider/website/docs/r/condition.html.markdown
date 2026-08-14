@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_condition"
-sidebar_current: "docs-cloudstack-condition"
+layout: "liviate"
+page_title: "CloudStack: liviate_condition"
+sidebar_current: "docs-liviate-condition"
 description: |-
   Creates a condition for autoscale policies.
 ---
 
-# cloudstack_condition
+# liviate_condition
 
 Creates a condition that evaluates performance metrics against thresholds for autoscale policies.
 
@@ -14,20 +14,20 @@ Creates a condition that evaluates performance metrics against thresholds for au
 
 ```hcl
 # Reference an existing counter
-data "cloudstack_counter" "cpu_counter" {
+data "liviate_counter" "cpu_counter" {
   id = "959e11c0-8416-11f0-9a72-1e001b000238"
 }
 
-resource "cloudstack_condition" "scale_up_condition" {
-  counter_id          = data.cloudstack_counter.cpu_counter.id
+resource "liviate_condition" "scale_up_condition" {
+  counter_id          = data.liviate_counter.cpu_counter.id
   relational_operator = "GT"
   threshold           = 80.0
   account_name        = "admin"
   domain_id           = "1"
 }
 
-resource "cloudstack_condition" "scale_down_condition" {
-  counter_id          = data.cloudstack_counter.cpu_counter.id
+resource "liviate_condition" "scale_down_condition" {
+  counter_id          = data.liviate_counter.cpu_counter.id
   relational_operator = "LT"
   threshold           = 20.0
   account_name        = "admin"

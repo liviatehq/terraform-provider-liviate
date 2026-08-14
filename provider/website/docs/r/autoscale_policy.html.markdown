@@ -1,40 +1,40 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_autoscale_policy"
-sidebar_current: "docs-cloudstack-autoscale-policy"
+layout: "liviate"
+page_title: "CloudStack: liviate_autoscale_policy"
+sidebar_current: "docs-liviate-autoscale-policy"
 description: |-
   Creates an autoscale policy.
 ---
 
-# cloudstack_autoscale_policy
+# liviate_autoscale_policy
 
 Creates an autoscale policy that defines when and how to scale virtual machines based on conditions.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_condition" "scale_up_condition" {
-  counter_id          = data.cloudstack_counter.cpu_counter.id
+resource "liviate_condition" "scale_up_condition" {
+  counter_id          = data.liviate_counter.cpu_counter.id
   relational_operator = "GT"
   threshold           = 80.0
   account_name        = "admin"
   domain_id           = "67bc8dbe-8416-11f0-9a72-1e001b000238"
 }
 
-resource "cloudstack_autoscale_policy" "scale_up_policy" {
+resource "liviate_autoscale_policy" "scale_up_policy" {
   name         = "scale-up-policy"
   action       = "scaleup"  # Case insensitive: scaleup/SCALEUP
   duration     = 300        # 5 minutes
   quiet_time   = 300        # 5 minutes
-  condition_ids = [cloudstack_condition.scale_up_condition.id]
+  condition_ids = [liviate_condition.scale_up_condition.id]
 }
 
-resource "cloudstack_autoscale_policy" "scale_down_policy" {
+resource "liviate_autoscale_policy" "scale_down_policy" {
   name         = "scale-down-policy"
   action       = "scaledown"  # Case insensitive: scaledown/SCALEDOWN
   duration     = 300
   quiet_time   = 600          # 10 minutes quiet time
-  condition_ids = [cloudstack_condition.scale_down_condition.id]
+  condition_ids = [liviate_condition.scale_down_condition.id]
 }
 ```
 

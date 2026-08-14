@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_disk"
-sidebar_current: "docs-cloudstack-resource-disk"
+layout: "liviate"
+page_title: "CloudStack: liviate_disk"
+sidebar_current: "docs-liviate-resource-disk"
 description: |-
   Creates a disk volume from a disk offering. This disk volume will be attached to a virtual machine if the optional parameters are configured.
 ---
 
-# cloudstack_disk
+# liviate_disk
 
 Creates a disk volume from a disk offering. This disk volume will be attached to
 a virtual machine if the optional parameters are configured.
@@ -14,7 +14,7 @@ a virtual machine if the optional parameters are configured.
 ## Example Usage
 
 ```hcl
-resource "cloudstack_disk" "default" {
+resource "liviate_disk" "default" {
   name               = "test-disk"
   attach             = "true"
   disk_offering      = "custom"
@@ -69,11 +69,11 @@ Disks can be imported; use `<DISK ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_disk.default 6f3ee798-d417-4e7a-92bc-95ad41cf1244
+terraform import liviate_disk.default 6f3ee798-d417-4e7a-92bc-95ad41cf1244
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_disk.default my-project/6f3ee798-d417-4e7a-92bc-95ad41cf1244
+terraform import liviate_disk.default my-project/6f3ee798-d417-4e7a-92bc-95ad41cf1244
 ```

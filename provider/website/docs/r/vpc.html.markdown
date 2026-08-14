@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_vpc"
-sidebar_current: "docs-cloudstack-resource-vpc"
+layout: "liviate"
+page_title: "CloudStack: liviate_vpc"
+sidebar_current: "docs-liviate-resource-vpc"
 description: |-
   Creates a VPC.
 ---
 
-# cloudstack_vpc
+# liviate_vpc
 
 Creates a VPC.
 
@@ -15,7 +15,7 @@ Creates a VPC.
 Basic usage:
 
 ```hcl
-resource "cloudstack_vpc" "default" {
+resource "liviate_vpc" "default" {
   name         = "test-vpc"
   cidr         = "10.0.0.0/16"
   vpc_offering = "Default VPC Offering"
@@ -60,11 +60,11 @@ VPCs can be imported; use `<VPC ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_vpc.default 84b23264-917a-4712-b8bf-cd7604db43b0
+terraform import liviate_vpc.default 84b23264-917a-4712-b8bf-cd7604db43b0
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_vpc.default my-project/84b23264-917a-4712-b8bf-cd7604db43b0
+terraform import liviate_vpc.default my-project/84b23264-917a-4712-b8bf-cd7604db43b0
 ```

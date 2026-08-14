@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_limits"
-sidebar_current: "docs-cloudstack-limits"
+layout: "liviate"
+page_title: "CloudStack: liviate_limits"
+sidebar_current: "docs-liviate-limits"
 description: |-
   Provides a CloudStack limits resource.
 ---
 
-# cloudstack_limits
+# liviate_limits
 
 Provides a CloudStack limits resource. This can be used to manage resource limits for accounts, domains, and projects within CloudStack.
 
@@ -14,13 +14,13 @@ Provides a CloudStack limits resource. This can be used to manage resource limit
 
 ```hcl
 # Set instance limit for the root domain
-resource "cloudstack_limits" "instance_limit" {
+resource "liviate_limits" "instance_limit" {
   type         = "instance"
   max          = 20
 }
 
 # Set volume limit for a specific account in a domain
-resource "cloudstack_limits" "volume_limit" {
+resource "liviate_limits" "volume_limit" {
   type         = "volume"
   max          = 50
   account      = "acct1"
@@ -28,14 +28,14 @@ resource "cloudstack_limits" "volume_limit" {
 }
 
 # Set primary storage limit for a project
-resource "cloudstack_limits" "storage_limit" {
+resource "liviate_limits" "storage_limit" {
   type         = "primarystorage"
   max          = 1000  # GB
   project      = "project-uuid"
 }
 
 # Set unlimited CPU limit
-resource "cloudstack_limits" "cpu_unlimited" {
+resource "liviate_limits" "cpu_unlimited" {
   type         = "cpu"
   max          = -1  # Unlimited
 }
@@ -80,9 +80,9 @@ The following attributes are exported:
 Resource limits can be imported using the resource type (numeric), account, domain ID, and project ID, e.g.
 
 ```bash
-terraform import cloudstack_limits.instance_limit 0
-terraform import cloudstack_limits.volume_limit 2-acct1-domain-uuid
-terraform import cloudstack_limits.storage_limit 10-project-uuid
+terraform import liviate_limits.instance_limit 0
+terraform import liviate_limits.volume_limit 2-acct1-domain-uuid
+terraform import liviate_limits.storage_limit 10-project-uuid
 ```
 
 When importing, the numeric resource type is used in the import ID. The provider will automatically convert the numeric type to the corresponding string type after import.

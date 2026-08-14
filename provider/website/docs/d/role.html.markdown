@@ -1,32 +1,32 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_role"
+layout: "liviate"
+page_title: "CloudStack: liviate_role"
 description: |-
   Gets information about a role.
 ---
 
-# cloudstack_role
+# liviate_role
 
 Use this data source to get information about a role for use in other resources.
 
 ## Example Usage
 
 ```hcl
-data "cloudstack_role" "admin" {
+data "liviate_role" "admin" {
   filter {
     name = "name"
     value = "Admin"
   }
 }
 
-resource "cloudstack_account" "example" {
+resource "liviate_account" "example" {
   email       = "example@example.com"
   first_name  = "John"
   last_name   = "Doe"
   password    = "password"
   username    = "johndoe"
   account_type = 1
-  role_id     = data.cloudstack_role.admin.id
+  role_id     = data.liviate_role.admin.id
 }
 ```
 
@@ -39,7 +39,7 @@ The following arguments are supported:
 ## Filter Example
 
 ```hcl
-data "cloudstack_role" "admin" {
+data "liviate_role" "admin" {
   filter {
     name = "name"
     value = "Admin"

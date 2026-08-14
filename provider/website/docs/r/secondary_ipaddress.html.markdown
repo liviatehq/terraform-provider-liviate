@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_secondary_ipaddress"
-sidebar_current: "docs-cloudstack-resource-secondary-ipaddress"
+layout: "liviate"
+page_title: "CloudStack: liviate_secondary_ipaddress"
+sidebar_current: "docs-liviate-resource-secondary-ipaddress"
 description: |-
   Assigns a secondary IP to a NIC.
 ---
 
-# cloudstack_secondary_ipaddress
+# liviate_secondary_ipaddress
 
 Assigns a secondary IP to a NIC.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_secondary_ipaddress" "default" {
+resource "liviate_secondary_ipaddress" "default" {
   virtual_machine_id = "server-1"
 }
 ```

@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_ipaddress"
-sidebar_current: "docs-cloudstack-resource-ipaddress"
+layout: "liviate"
+page_title: "CloudStack: liviate_ipaddress"
+sidebar_current: "docs-liviate-resource-ipaddress"
 description: |-
   Acquires and associates a public IP.
 ---
 
-# cloudstack_ipaddress
+# liviate_ipaddress
 
 Acquires and associates a public IP.
 
 ## Example Usage
 
 ```hcl
-resource "cloudstack_ipaddress" "default" {
+resource "liviate_ipaddress" "default" {
   network_id = "6eb22f91-7454-4107-89f4-36afcdf33021"
 }
 ```

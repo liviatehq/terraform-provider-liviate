@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_network_offerings"
-sidebar_current: "docs-cloudstack-cloudstack_network_offering"
+layout: "liviate"
+page_title: "Liviate: liviate_network_offerings"
+sidebar_current: "docs-liviate-liviate_network_offering"
 description: |-
-  Gets information about cloudstack network offering.
+  Gets information about liviate network offering.
 ---
 
-# cloudstack_network_offering
+# liviate_network_offering
 
 Use this datasource to get information about a network offering for use in other resources.
 
 ### Example Usage
 
 ```hcl
-  data "cloudstack_network_offering" "net-off-data-source"{
+  data "liviate_network_offering" "net-off-data-source"{
     filter{
     name = "name"
     value="TestNetworkDisplay12"

@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_instance"
-sidebar_current: "docs-cloudstack-resource-instance"
+layout: "liviate"
+page_title: "CloudStack: liviate_instance"
+sidebar_current: "docs-liviate-resource-instance"
 description: |-
   Creates and automatically starts a virtual machine based on a service offering, disk offering, and template.
 ---
 
-# cloudstack_instance
+# liviate_instance
 
 Creates and automatically starts a virtual machine based on a service offering,
 disk offering, and template.
@@ -16,7 +16,7 @@ disk offering, and template.
 ### Basic Instance
 
 ```hcl
-resource "cloudstack_instance" "web" {
+resource "liviate_instance" "web" {
   name             = "server-1"
   service_offering = "small"
   network_id       = "6eb22f91-7454-4107-89f4-36afcdf33021"
@@ -28,7 +28,7 @@ resource "cloudstack_instance" "web" {
 ### Instance with Inline User Data
 
 ```hcl
-resource "cloudstack_instance" "web_with_userdata" {
+resource "liviate_instance" "web_with_userdata" {
   name             = "web-server"
   service_offering = "small"
   network_id       = "6eb22f91-7454-4107-89f4-36afcdf33021"
@@ -50,7 +50,7 @@ resource "cloudstack_instance" "web_with_userdata" {
 
 ```hcl
 # First, create registered user data
-resource "cloudstack_userdata" "web_init" {
+resource "liviate_userdata" "web_init" {
   name = "web-server-init"
   
   userdata = base64encode(<<-EOF
@@ -71,14 +71,14 @@ resource "cloudstack_userdata" "web_init" {
 }
 
 # Deploy instance with parameterized user data
-resource "cloudstack_instance" "app_server" {
+resource "liviate_instance" "app_server" {
   name             = "app-server-01"
   service_offering = "medium"
   network_id       = "6eb22f91-7454-4107-89f4-36afcdf33021"
   template         = "Ubuntu 20.04"
   zone             = "zone-1"
   
-  userdata_id = cloudstack_userdata.web_init.id
+  userdata_id = liviate_userdata.web_init.id
   
   userdata_details = {
     "app_name"    = "My Application"
@@ -91,11 +91,11 @@ resource "cloudstack_instance" "app_server" {
 
 ```hcl
 # Use a template that has user data pre-linked
-resource "cloudstack_instance" "from_template" {
+resource "liviate_instance" "from_template" {
   name             = "template-instance"
   service_offering = "small"
   network_id       = "6eb22f91-7454-4107-89f4-36afcdf33021"
-  template         = cloudstack_template.web_template.id  # Template with userdata_link
+  template         = liviate_template.web_template.id  # Template with userdata_link
   zone             = "zone-1"
   
   # Override parameters for the template's linked user data
@@ -205,11 +205,11 @@ Instances can be imported; use `<INSTANCE ID>` as the import ID. For
 example:
 
 ```shell
-terraform import cloudstack_instance.default 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_instance.default 5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_instance.default my-project/5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
+terraform import liviate_instance.default my-project/5cf69677-7e4b-4bf4-b868-f0b02bb72ee0
 ```

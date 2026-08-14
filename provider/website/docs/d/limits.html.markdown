@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_limits"
-sidebar_current: "docs-cloudstack-datasource-limits"
+layout: "liviate"
+page_title: "CloudStack: liviate_limits"
+sidebar_current: "docs-liviate-datasource-limits"
 description: |-
   Gets information about CloudStack resource limits.
 ---
 
-# cloudstack_limits
+# liviate_limits
 
 Use this data source to retrieve information about CloudStack resource limits for accounts, domains, and projects.
 
@@ -14,19 +14,19 @@ Use this data source to retrieve information about CloudStack resource limits fo
 
 ```hcl
 # Get all resource limits for a specific domain
-data "cloudstack_limits" "domain_limits" {
+data "liviate_limits" "domain_limits" {
   domain_id = "domain-uuid"
 }
 
 # Get instance limits for a specific account
-data "cloudstack_limits" "account_instance_limits" {
+data "liviate_limits" "account_instance_limits" {
   type         = "instance"
   account      = "acct1"
   domain_id     = "domain-uuid"
 }
 
 # Get primary storage limits for a project
-data "cloudstack_limits" "project_storage_limits" {
+data "liviate_limits" "project_storage_limits" {
   type         = "primarystorage"
   project      = "project-uuid"
 }

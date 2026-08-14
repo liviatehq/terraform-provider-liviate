@@ -22,17 +22,17 @@ inputs:
     description: 'Cloudstack version'
     required: true
 outputs:
-  CLOUDSTACK_USER_ID:
-    description: 'Cloudstack user id'
+  LIVIATE_USER_ID:
+    description: 'Liviate user id'
     value: ${{ steps.setup-cloudstack.outputs.user_id }}
-  CLOUDSTACK_API_KEY:
-    description: 'Cloudstack api key'
+  LIVIATE_API_KEY:
+    description: 'Liviate api key'
     value: ${{ steps.setup-cloudstack.outputs.api_key }}
-  CLOUDSTACK_SECRET_KEY:
-    description: 'Cloudstack secret key'
+  LIVIATE_SECRET_KEY:
+    description: 'Liviate secret key'
     value: ${{ steps.setup-cloudstack.outputs.secret_key }}
-  CLOUDSTACK_API_URL:
-    description: 'Cloudstack API URL'
+  LIVIATE_API_URL:
+    description: 'Liviate API URL'
     value: http://localhost:8080/client/api
 
 runs:
@@ -85,16 +85,16 @@ runs:
         docker exec $CONTAINER_ID cmk -p localcloud registeruserKeys id=$(jq -r '.user[0].id' users.json) > api.json
 
         # Extract the first user's keys (assuming admin is first)
-        CLOUDSTACK_API_KEY=$(jq -r '.userkeys.apikey' api.json)
-        CLOUDSTACK_SECRET_KEY=$(jq -r '.userkeys.secretkey' api.json)
-        CLOUDSTACK_USER_ID=$(jq -r '.user[0].id' users.json)
+        LIVIATE_API_KEY=$(jq -r '.userkeys.apikey' api.json)
+        LIVIATE_SECRET_KEY=$(jq -r '.userkeys.secretkey' api.json)
+        LIVIATE_USER_ID=$(jq -r '.user[0].id' users.json)
 
-        echo "::add-mask::$CLOUDSTACK_API_KEY"
-        echo "::add-mask::$CLOUDSTACK_SECRET_KEY"
+        echo "::add-mask::$LIVIATE_API_KEY"
+        echo "::add-mask::$LIVIATE_SECRET_KEY"
 
-        echo "user_id=$CLOUDSTACK_USER_ID" >> $GITHUB_OUTPUT
-        echo "api_key=$CLOUDSTACK_API_KEY" >> $GITHUB_OUTPUT
-        echo "secret_key=$CLOUDSTACK_SECRET_KEY" >> $GITHUB_OUTPUT
+        echo "user_id=$LIVIATE_USER_ID" >> $GITHUB_OUTPUT
+        echo "api_key=$LIVIATE_API_KEY" >> $GITHUB_OUTPUT
+        echo "secret_key=$LIVIATE_SECRET_KEY" >> $GITHUB_OUTPUT
 
     - name: Install CMK
       shell: bash
@@ -104,4 +104,4 @@ runs:
     - name: Create extra resources
       shell: bash
       run: |
-        cmk -u $CLOUDSTACK_API_URL -k $CLOUDSTACK_API_KEY -s $CLOUDSTACK_SECRET_KEY -o json create project name=terraform displaytext=terraform
+        cmk -u $LIVIATE_API_URL -k $LIVIATE_API_KEY -s $LIVIATE_SECRET_KEY -o json create project name=terraform displaytext=terraform

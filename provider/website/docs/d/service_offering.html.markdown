@@ -1,19 +1,19 @@
 ---
-layout: "cloudstack"
-page_title: "Cloudstack: cloudstack_service_offering"
-sidebar_current: "docs-cloudstack-cloudstack_service_offering"
+layout: "liviate"
+page_title: "Liviate: liviate_service_offering"
+sidebar_current: "docs-liviate-liviate_service_offering"
 description: |-
-  Gets information about cloudstack service offering.
+  Gets information about liviate service offering.
 ---
 
-# cloudstack_service_offering
+# liviate_service_offering
 
 Use this datasource to get information about a service offering for use in other resources.
 
 ### Example Usage
 
 ```hcl
-    data "cloudstack_service_offering" "service-offering-data-source"{
+    data "liviate_service_offering" "service-offering-data-source"{
     filter{
     name = "name"
     value = "TestServiceUpdate"

@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_network_acl_rule"
-sidebar_current: "docs-cloudstack-resource-network-acl-rule"
+layout: "liviate"
+page_title: "CloudStack: liviate_network_acl_rule"
+sidebar_current: "docs-liviate-resource-network-acl-rule"
 description: |-
   Creates network ACL rules for a given network ACL.
 ---
 
-# cloudstack_network_acl_rule
+# liviate_network_acl_rule
 
 Creates network ACL rules for a given network ACL.
 
@@ -15,7 +15,7 @@ Creates network ACL rules for a given network ACL.
 ### Basic Example with Port
 
 ```hcl
-resource "cloudstack_network_acl_rule" "default" {
+resource "liviate_network_acl_rule" "default" {
   acl_id = "f3843ce0-334c-4586-bbd3-0c2e2bc946c6"
 
   rule {
@@ -31,7 +31,7 @@ resource "cloudstack_network_acl_rule" "default" {
 ### Example with Port Range
 
 ```hcl
-resource "cloudstack_network_acl_rule" "port_range" {
+resource "liviate_network_acl_rule" "port_range" {
   acl_id = "f3843ce0-334c-4586-bbd3-0c2e2bc946c6"
 
   rule {
@@ -47,7 +47,7 @@ resource "cloudstack_network_acl_rule" "port_range" {
 ### Example with No Port (Allow All Ports)
 
 ```hcl
-resource "cloudstack_network_acl_rule" "all_ports" {
+resource "liviate_network_acl_rule" "all_ports" {
   acl_id = "f3843ce0-334c-4586-bbd3-0c2e2bc946c6"
 
   rule {
@@ -63,7 +63,7 @@ resource "cloudstack_network_acl_rule" "all_ports" {
 ### Example with ICMP
 
 ```hcl
-resource "cloudstack_network_acl_rule" "icmp" {
+resource "liviate_network_acl_rule" "icmp" {
   acl_id = "f3843ce0-334c-4586-bbd3-0c2e2bc946c6"
 
   rule {
@@ -81,7 +81,7 @@ resource "cloudstack_network_acl_rule" "icmp" {
 ### Complete Example with Multiple Rules
 
 ```hcl
-resource "cloudstack_network_acl_rule" "web_server" {
+resource "liviate_network_acl_rule" "web_server" {
   acl_id = "f3843ce0-334c-4586-bbd3-0c2e2bc946c6"
 
   # HTTP traffic
@@ -193,11 +193,11 @@ Network ACL Rules can be imported; use `<NETWORK ACL Rule ID>` as the import ID.
 example:
 
 ```shell
-terraform import cloudstack_network_acl_rule.default e8b5982a-1b50-4ea9-9920-6ea2290c7359
+terraform import liviate_network_acl_rule.default e8b5982a-1b50-4ea9-9920-6ea2290c7359
 ```
 
 When importing into a project you need to prefix the import ID with the project name:
 
 ```shell
-terraform import cloudstack_network_acl_rule.default my-project/e8b5982a-1b50-4ea9-9920-6ea2290c7359
+terraform import liviate_network_acl_rule.default my-project/e8b5982a-1b50-4ea9-9920-6ea2290c7359
 ```

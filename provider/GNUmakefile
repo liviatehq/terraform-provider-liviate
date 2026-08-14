@@ -20,10 +20,49 @@ GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 PKG_NAME=liviate
 
+OS      ?= $(shell go env GOOS)
+ARCH    ?= $(shell go env GOARCH)
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+EXE     := $(if $(filter windows,$(OS)),.exe,)
+BINARY  := terraform-provider-$(PKG_NAME)$(EXE)
+DIST    := terraform-provider-$(PKG_NAME)_v$(VERSION)$(EXE)
+BIN_DIR := bin
+
+# Terraform local plugin directory
+ifeq ($(OS),windows)
+  TERRAFORM_PLUGIN_DIR ?= $(if $(APPDATA),$(APPDATA)/terraform.d/plugins,$(HOME)/.terraform.d/plugins)
+else
+  TERRAFORM_PLUGIN_DIR ?= $(HOME)/.terraform.d/plugins
+endif
+
+PLUGIN_ARCH_DIR := $(TERRAFORM_PLUGIN_DIR)/registry.terraform.io/$(PKG_NAME)/$(PKG_NAME)/$(VERSION)/$(OS)_$(ARCH)
+
 default: build
 
 build: fmtcheck
-	go install
+	go build -o "$(BIN_DIR)/$(BINARY)" .
+
+install: build
+	mkdir -p "$(PLUGIN_ARCH_DIR)"
+	cp "$(BIN_DIR)/$(BINARY)" "$(PLUGIN_ARCH_DIR)/$(DIST)"
+	@echo "Installed $(DIST) -> $(PLUGIN_ARCH_DIR)"
+
+deploy: install
+
+uninstall:
+	rm -rf "$(PLUGIN_ARCH_DIR)"
+
+clean:
+	rm -rf "$(BIN_DIR)"
+
+sync-forge:
+	@bash "$(CURDIR)/scripts/forge-sync.sh" push
+
+sync-forge-dry-run:
+	@bash "$(CURDIR)/scripts/forge-sync.sh" --dry-run push
+
+pull-forge:
+	@bash "$(CURDIR)/scripts/forge-sync.sh" pull
 
 test: fmtcheck
 	go test -i $(TEST) || exit 1
@@ -73,5 +112,5 @@ ifeq (,$(wildcard $(GOPATH)/src/$(WEBSITE_REPO)))
 endif
 	@$(MAKE) -C $(GOPATH)/src/$(WEBSITE_REPO) website-provider-test PROVIDER_PATH=$(shell pwd) PROVIDER_NAME=$(PKG_NAME)
 
-.PHONY: build test testacc vet fmt fmtcheck errcheck vendor-status test-compile website website-test
+.PHONY: build install deploy uninstall clean sync-forge sync-forge-dry-run pull-forge test testacc vet fmt fmtcheck errcheck vendor-status test-compile website website-test
 

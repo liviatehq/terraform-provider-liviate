@@ -1,12 +1,12 @@
 ---
-layout: "cloudstack"
-page_title: "CloudStack: cloudstack_quota"
-sidebar_current: "docs-cloudstack-datasource-quota"
+layout: "liviate"
+page_title: "CloudStack: liviate_quota"
+sidebar_current: "docs-liviate-datasource-quota"
 description: |-
   Gets information about CloudStack quota summaries.
 ---
 
-# cloudstack_quota
+# liviate_quota
 
 Use this data source to retrieve quota summary information for CloudStack accounts and domains. This provides information about quota values and whether quota is enabled for specific accounts.
 
@@ -14,17 +14,17 @@ Use this data source to retrieve quota summary information for CloudStack accoun
 
 ```hcl
 # Get quota summary for all accounts
-data "cloudstack_quota" "all_quotas" {
+data "liviate_quota" "all_quotas" {
 }
 
 # Get quota summary for a specific account
-data "cloudstack_quota" "account_quota" {
+data "liviate_quota" "account_quota" {
   account   = "myaccount"
   domain_id = "domain-uuid"
 }
 
 # Get quota summary for a specific domain
-data "cloudstack_quota" "domain_quota" {
+data "liviate_quota" "domain_quota" {
   domain_id = "domain-uuid"
 }
 ```

@@ -1,7 +1,7 @@
 ---
-layout: "cloudstack"
+layout: "liviate"
 page_title: "CloudStack: physical_network"
-sidebar_current: "docs-cloudstack-resource-physical-network"
+sidebar_current: "docs-liviate-resource-physical-network"
 description: |-
   Creates a physical network
 ---
@@ -15,13 +15,13 @@ Creates a physical network
 Basic usage:
 
 ```hcl
-resource "cloudstack_physical_network" "example" {
+resource "liviate_physical_network" "example" {
 	broadcast_domain_range = "ZONE"
 	isolation_methods      = "VLAN"
 	name                   = "example"
 	network_speed          = "10G"
 	tags                   = "vlan"
-	zone_id                = cloudstack_zone.example.id
+	zone_id                = liviate_zone.example.id
 }
 ```
 
