@@ -2,8 +2,8 @@ terraform {
   required_version = ">= 1.0"
   required_providers {
     liviate = {
-      source  = "liviate/liviate"
-      version = "0.5.0"
+      source  = "liviatehq/liviate"
+      version = "1.0.0"
     }
   }
 }

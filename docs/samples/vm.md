@@ -8,7 +8,7 @@ Provisions a virtual machine using the Liviate provider.
 |------|---------|
 | `main.tf` | Provider + `required_providers` block |
 | `variables.tf` | Input variables (API credentials are `sensitive`) |
-| `instances.tf` | Data sources + a sample `liviate_instance` |
+| `instances.tf` | Data sources + sample `liviate_instance` resources and an `liviate_ssh_keypair` |
 | `terraform.tfvars.example` | Copy to `terraform.tfvars` and set real values |
 
 ## What it does
@@ -17,7 +17,8 @@ Provisions a virtual machine using the Liviate provider.
 - Looks up a service offering (`liviate-vcpu-2-4gb-20260317-01`) with
   `data "liviate_service_offering"`.
 - Looks up the default zone with `data "liviate_zone"`.
-- Creates a VM with a 20 GB root disk.
+- Registers an SSH keypair (`liviate_ssh_keypair`) from `public_key_path`.
+- Creates two VMs with a 30 GB root disk, both using the SSH keypair.
 
 ## Run it
 

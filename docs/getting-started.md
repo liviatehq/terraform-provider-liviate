@@ -30,7 +30,7 @@ Create or edit `%APPDATA%\terraform.rc` (Windows) or `~/.terraformrc`
 ```hcl
 provider_installation {
   dev_overrides {
-    "liviate/liviate" = "C:/Users/madsk/workspace/liviate-cs/provider"
+    "liviatehq/liviate" = "C:/Users/madsk/workspace/liviate-cs/provider"
   }
   direct {}
 }

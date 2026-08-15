@@ -5,11 +5,11 @@
 - [Terraform](https://www.terraform.io/downloads.html) 1.0.x
 - [Go](https://golang.org/doc/install) 1.20+ (to build the provider plugin)
 
-See wiki: <https://github.com/liviate/terraform-provider-liviate/wiki>
+See wiki: <https://github.com/liviatehq/terraform-provider-liviate/wiki>
 
 ## Installing from Github Release
 
-User can install the Liviate Terraform Provider (CloudStack Backend) using the [Github Releases](https://github.com/liviate/terraform-provider-liviate/releases) with the installation steps below.
+User can install the Liviate Terraform Provider (CloudStack Backend) using the [Github Releases](https://github.com/liviatehq/terraform-provider-liviate/releases) with the installation steps below.
 
 Replace the `RELEASE` version with the version you're trying to install and use.
 
@@ -31,10 +31,10 @@ Steps for installation:
 ```bash
 RELEASE=0.5.0
 ARCH=darwin_arm64
-mkdir -p ~/.terraform.d/plugins/local/liviate/liviate/${RELEASE}/${ARCH}
-wget "https://github.com/liviate/terraform-provider-liviate/releases/download/v${RELEASE}/terraform-provider-liviate_${RELEASE}_${ARCH}.zip"
+mkdir -p ~/.terraform.d/plugins/local/liviatehq/liviate/${RELEASE}/${ARCH}
+wget "https://github.com/liviatehq/terraform-provider-liviate/releases/download/v${RELEASE}/terraform-provider-liviate_${RELEASE}_${ARCH}.zip"
 unzip terraform-provider-liviate_${RELEASE}_${ARCH}.zip -d terraform-provider-liviate_${RELEASE}
-mv terraform-provider-liviate_${RELEASE}/terraform-provider-liviate_v${RELEASE} ~/.terraform.d/plugins/local/liviate/liviate/${RELEASE}/${ARCH}/terraform-provider-liviate_v${RELEASE}
+mv terraform-provider-liviate_${RELEASE}/terraform-provider-liviate_v${RELEASE} ~/.terraform.d/plugins/local/liviatehq/liviate/${RELEASE}/${ARCH}/terraform-provider-liviate_v${RELEASE}
 ```
 
 To use the locally installed provider, please use the following in your main.tf etc, and then run `terraform init`:
@@ -43,7 +43,7 @@ To use the locally installed provider, please use the following in your main.tf 
 terraform {
   required_providers {
     liviate = {
-      source = "local/liviate/liviate"
+      source = "local/liviatehq/liviate"
       version = "0.5.0"
     }
   }
@@ -64,7 +64,7 @@ To install the Liviate provider, copy and paste the below code into your Terrafo
 terraform {
   required_providers {
     liviate = {
-      source = "liviate/liviate"
+      source = "liviatehq/liviate"
       version = "0.5.0"
     }
   }
@@ -79,13 +79,13 @@ User hitting installation issue using registry can install using the local insta
 
 ## Documentation
 
-For more details on how to use the provider, visit [website](website/) or visit <https://registry.terraform.io/providers/liviate/liviate/latest/docs>
+For more details on how to use the provider, visit [website](website/) or visit <https://registry.terraform.io/providers/liviatehq/liviate/latest/docs>
 
 ## Developing the Provider
 
 If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.16+ is _required_). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
-Clone repository to: `$GOPATH/src/github.com/liviate/terraform-provider-liviate`
+Clone repository to: `$GOPATH/src/github.com/liviatehq/terraform-provider-liviate`
 
 ```sh
 mkdir -p $GOPATH/src/github.com/apache; cd $GOPATH/src/github.com/apache
@@ -97,7 +97,7 @@ To compile the provider, run `make build`. This will build the provider and put 
 Enter the provider directory and build the provider
 
 ```sh
-cd $GOPATH/src/github.com/liviate/terraform-provider-liviate
+cd $GOPATH/src/github.com/liviatehq/terraform-provider-liviate
 make build
 ls $GOPATH/bin/terraform-provider-liviate
 ```
@@ -227,7 +227,7 @@ export GITHUB_TOKEN="YOUR_GH_TOKEN"
 ```
 
 Note: Due to how the Terraform registry works, it require the repo to be named in a certain way.
-For this reason, the builds are published via <https://github.com/liviate/terraform-provider-liviate/releases>
+For this reason, the builds are published via <https://github.com/liviatehq/terraform-provider-liviate/releases>
 
 To do this, add the following remote for publishing builds:
 

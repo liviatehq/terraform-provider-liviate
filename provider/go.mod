@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-module github.com/liviate/terraform-provider-liviate
+module github.com/liviatehq/terraform-provider-liviate
 
 require (
 	github.com/apache/cloudstack-go/v2 v2.18.1

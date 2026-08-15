@@ -30,7 +30,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-mux/tf5to6server"
-	"github.com/liviate/terraform-provider-liviate/liviate"
+	"github.com/liviatehq/terraform-provider-liviate/liviate"
 )
 
 var version = "dev"
@@ -73,7 +73,7 @@ func main() {
 	}
 
 	err = tf6server.Serve(
-		"registry.terraform.io/liviate/liviate",
+		"registry.terraform.io/liviatehq/liviate",
 		muxServer.ProviderServer,
 		serveOpts...,
 	)

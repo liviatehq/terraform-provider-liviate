@@ -6,9 +6,9 @@ Example Terraform configuration using the locally-built Liviate provider.
 
 | File | Purpose |
 |------|---------|
-| `main.tf` | Provider + required_providers block (source `liviate/liviate`) |
+| `main.tf` | Provider + required_providers block (source `liviatehq/liviate`) |
 | `variables.tf` | Input variables (API credentials are `sensitive`) |
-| `instances.tf` | Data sources + a sample `liviate_instance` |
+| `instances.tf` | Data sources + sample `liviate_instance` resources and an `liviate_ssh_keypair` |
 | `terraform.tfvars.example` | Copy to `terraform.tfvars` and set real values |
 
 ## Usage

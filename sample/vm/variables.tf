@@ -15,3 +15,15 @@ variable "zone_id" {
   type        = string
   default     = ""
 }
+
+variable "ssh_key_name" {
+  description = "SSH keypair name"
+  type        = string
+  default     = "liviate-key"
+}
+
+variable "public_key_path" {
+  description = "Path to the public key to register"
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
+}

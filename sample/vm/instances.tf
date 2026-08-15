@@ -20,6 +20,11 @@ data "liviate_zone" "primary" {
   }
 }
 
+resource "liviate_ssh_keypair" "ssh" {
+  name       = var.ssh_key_name
+  public_key = file(var.public_key_path)
+}
+
 resource "liviate_instance" "web-01" {
   name             = "liviate-web-01"
   display_name     = "Web Server 01"
@@ -27,6 +32,7 @@ resource "liviate_instance" "web-01" {
   template         = data.liviate_template.os.id
   zone             = var.zone_id == "" ? data.liviate_zone.primary.id : var.zone_id
   root_disk_size   = 30
+  keypair          = liviate_ssh_keypair.ssh.name
 }
 
 resource "liviate_instance" "web-02" {
@@ -36,4 +42,5 @@ resource "liviate_instance" "web-02" {
   template         = data.liviate_template.os.id
   zone             = var.zone_id == "" ? data.liviate_zone.primary.id : var.zone_id
   root_disk_size   = 30
+  keypair          = liviate_ssh_keypair.ssh.name
 }

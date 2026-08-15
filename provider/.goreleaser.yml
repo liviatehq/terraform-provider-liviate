@@ -73,5 +73,5 @@ signs:
 release:
   disable: false
   github:
-    owner: liviate
+    owner: liviatehq
     name: terraform-provider-liviate
