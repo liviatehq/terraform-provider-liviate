@@ -18,7 +18,6 @@ terraform {
 
 - A [GPG key](https://gnupg.org/) for signing releases
 - Write access to `github.com/liviatehq/terraform-provider-liviate`
-- [GoReleaser](https://goreleaser.com/install/) installed locally
 
 ## Step 1 — Generate a GPG signing key
 
@@ -26,39 +25,49 @@ terraform {
 gpg --full-generate-key
 ```
 
-Pick RSA 4096, no expiration. Export the fingerprint:
+Pick RSA 4096, no expiration. Get the fingerprint:
 
 ```sh
 gpg --list-secret-keys --keyid-format LONG
 # Look for the line:   sec   rsa4096/XXXXXXXXXXXX
-# The XXXXXXXXXXXX part is your fingerprint
 ```
 
-Export the public key (you'll upload this to the Terraform Registry):
+Export the **private** key (for CI signing):
 
 ```sh
-gpg --export --armor XXXXXXXXXXXX > liviate-gpg.pub
+gpg --armor --export-secret-keys XXXXXXXXXXXX > liviate-release-key.private.asc
 ```
 
-## Step 2 — Set environment variables
+Export the **public** key (for the Terraform Registry):
 
 ```sh
-export GPG_FINGERPRINT=XXXXXXXXXXXX
-export GITHUB_TOKEN=ghp_...   # a GitHub token with repo scope
+gpg --armor --export XXXXXXXXXXXX > liviate-gpg.pub
 ```
 
-## Step 3 — Tag and release
+## Step 2 — Add the private key to GitHub secrets
+
+1. Go to **Settings → Secrets and variables → Actions** on the
+   `github.com/liviatehq/terraform-provider-liviate` repository.
+2. Click **New repository secret**.
+3. Name: `GPG_PRIVATE_KEY`
+4. Value: paste the entire contents of `liviate-release-key.private.asc`
+   (including the `-----BEGIN PGP PRIVATE KEY BLOCK-----` header).
+5. Click **Add secret**.
+
+The fingerprint (`XXXXXXXXXXXX`) is already hardcoded in the
+`.github/workflows/release.yml` workflow file.
+
+## Step 3 — Tag and push (triggers the CI release)
 
 ```sh
 git tag v1.0.0
-goreleaser release --clean
+git push github v1.0.0
 ```
 
-GoReleaser will:
-- Build the provider for all platforms (linux/darwin/windows/freebsd/openbsd × amd64/386/arm64/arm)
-- Create SHA256SUMS and sign them with your GPG key
-- Create a GitHub Release on `github.com/liviatehq/terraform-provider-liviate`
-- Upload the zip archives and signed checksums
+This triggers the `release` GitHub Actions workflow, which:
+- Imports the GPG private key from the `GPG_PRIVATE_KEY` secret
+- Runs GoReleaser to build all platform binaries, create a GitHub Release,
+  and sign the SHA256SUMS with the GPG key
 
 ## Step 4 — Publish on the Terraform Registry
 
@@ -72,12 +81,10 @@ GoReleaser will:
 
 ## Step 5 — Verify
 
-In a fresh directory, create a `main.tf` with the provider source and run `terraform init`. It should download from the registry.
+In a fresh directory, create a `main.tf` with the provider source and run
+`terraform init`. It should download from the registry.
 
 ## Syncing with upstream (apache/cloudstack-terraform-provider)
-
-To fetch new commits from the Apache CloudStack provider without rebasing
-(which isn't possible directly due to the repo restructure), use:
 
 ```sh
 git fetch upstream

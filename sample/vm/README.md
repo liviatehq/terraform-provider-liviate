@@ -13,8 +13,8 @@ Example Terraform configuration using the locally-built Liviate provider.
 
 ## Usage
 
-1. Make sure the provider is installed in the local plugin mirror
-   (already done — see `%APPDATA%\terraform.d\plugins\registry.terraform.io\liviate\liviate\0.5.0\windows_amd64`).
+1. The provider is built locally and a dev override is set up
+   (see `docs/getting-started.md` for the dev-override setup).
 
 2. Provide credentials. Either copy `terraform.tfvars.example` to `terraform.tfvars`
    and edit it, or set environment variables:

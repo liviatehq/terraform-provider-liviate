@@ -29,7 +29,7 @@ The valid `ARCH` options are:
 Steps for installation:
 
 ```bash
-RELEASE=0.5.0
+RELEASE=1.0.0
 ARCH=darwin_arm64
 mkdir -p ~/.terraform.d/plugins/local/liviatehq/liviate/${RELEASE}/${ARCH}
 wget "https://github.com/liviatehq/terraform-provider-liviate/releases/download/v${RELEASE}/terraform-provider-liviate_${RELEASE}_${ARCH}.zip"
@@ -44,7 +44,7 @@ terraform {
   required_providers {
     liviate = {
       source = "local/liviatehq/liviate"
-      version = "0.5.0"
+      version = "1.0.0"
     }
   }
 }
@@ -65,7 +65,7 @@ terraform {
   required_providers {
     liviate = {
       source = "liviatehq/liviate"
-      version = "0.5.0"
+      version = "1.0.0"
     }
   }
 }
@@ -109,8 +109,8 @@ On Windows at %APPDATA%\terraform.d\plugins,
 
 ```sh
 cd ~
-mkdir -p ~/.terraform.d/plugins/localdomain/provider/liviate/0.5.0/linux_amd64
-cp $GOPATH/bin/terraform-provider-liviate ~/.terraform.d/plugins/localdomain/provider/liviate/0.5.0/linux_amd64
+mkdir -p ~/.terraform.d/plugins/localdomain/provider/liviate/1.0.0/linux_amd64
+cp $GOPATH/bin/terraform-provider-liviate ~/.terraform.d/plugins/localdomain/provider/liviate/1.0.0/linux_amd64
 ```
 
 ## Testing the Provider
@@ -188,7 +188,7 @@ terraform {
   required_providers {
     liviate = {
       source = "localdomain/provider/liviate"
-      version = "0.4.0"
+      version = "1.0.0"
     }
   }
 }
@@ -238,8 +238,8 @@ git remote add liviate git@github.com:liviate/terraform-provider-liviate.git
 Finally tag the release, for example and push to Github:
 
 ```sh
-git tag -a v0.5.0-pre -m "v0.5.0-pre Alpha Release for testing purposes"
-git push liviate v0.5.0-pre
+git tag -a v1.0.0 -m "v1.0.0 Liviate Terraform Provider"
+git push github v1.0.0
 ```
 
 Run goreleaser to release them:

@@ -16,6 +16,8 @@
 # under the License.
 version: 2
 
+project_name: terraform-provider-liviate
+
 before:
   hooks:
     - go mod download
@@ -49,7 +51,7 @@ builds:
         goarch: arm64
       - goos: windows
         goarch: arm64
-    binary: '{{ .ProjectName }}'
+    binary: '{{ .ProjectName }}_v{{ .Version }}'
 
 archives:
   - format: zip
