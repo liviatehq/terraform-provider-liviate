@@ -18,7 +18,7 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release --clean
+          args: --working-dir=provider release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: B279C648D2672DC5C2999A5EAB021017AE8DC52D
