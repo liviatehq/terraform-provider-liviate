@@ -264,5 +264,3 @@ func resourceCloudStackBucketDelete(d *schema.ResourceData, meta interface{}) er
 
 	return nil
 }
-
-
