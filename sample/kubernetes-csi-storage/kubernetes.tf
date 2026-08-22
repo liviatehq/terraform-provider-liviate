@@ -61,7 +61,7 @@ provider "kubernetes" {
 #    without an explicit depends_on, Terraform has no way to know the CSI driver pods (which
 #    read those permissions at PVC-provision time, not at StorageClass-creation time) need the
 #    grant to exist first.
-resource "kubernetes_storage_class" "cloudstack_csi" {
+resource "kubernetes_storage_class_v1" "cloudstack_csi" {
   metadata {
     name = "cloudstack-csi"
     annotations = {

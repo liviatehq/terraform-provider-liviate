@@ -22,6 +22,8 @@ package liviate
 import (
 	"fmt"
 	"log"
+	"strings"
+	"time"
 
 	"github.com/apache/cloudstack-go/v2/cloudstack"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -101,32 +103,48 @@ func resourceCloudStackRolePermissionCreate(d *schema.ResourceData, meta interfa
 
 // Moves every non-"*" rule ahead of every "*" rule on the role, preserving relative order within
 // each group. Idempotent -- safe to call after every create.
+//
+// Retries on CloudStack's "rule permissions list has changed while you were making updates"
+// (CSExceptionErrorCode 4250) -- an optimistic-concurrency check that fires when two of these
+// reorders race on the same role. Terraform runs a for_each's Create calls concurrently by
+// default (parallelism=10), so N liviate_role_permission resources on the same role_id WILL
+// collide here in normal use, not just as an edge case -- found live applying 9 of these at once.
 func reorderSpecificRulesBeforeWildcards(cs *cloudstack.CloudStackClient, roleID string) error {
-	lp := cs.Role.NewListRolePermissionsParams()
-	lp.SetRoleid(roleID)
-	lr, err := cs.Role.ListRolePermissions(lp)
-	if err != nil {
-		return fmt.Errorf("Error listing RolePermissions for reorder: %s", err)
-	}
-
-	var specific, wildcard []string
-	for _, rp := range lr.RolePermissions {
-		if rp.Rule == "*" {
-			wildcard = append(wildcard, rp.Id)
-		} else {
-			specific = append(specific, rp.Id)
+	const maxAttempts = 8
+	var lastErr error
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		lp := cs.Role.NewListRolePermissionsParams()
+		lp.SetRoleid(roleID)
+		lr, err := cs.Role.ListRolePermissions(lp)
+		if err != nil {
+			return fmt.Errorf("Error listing RolePermissions for reorder: %s", err)
 		}
-	}
-	if len(wildcard) == 0 {
-		return nil // nothing to reorder around
-	}
 
-	up := cs.Role.NewUpdateRolePermissionParams(roleID)
-	up.SetRuleorder(append(specific, wildcard...))
-	if _, err := cs.Role.UpdateRolePermission(up); err != nil {
-		return fmt.Errorf("Error reordering RolePermissions on role %s: %s", roleID, err)
+		var specific, wildcard []string
+		for _, rp := range lr.RolePermissions {
+			if rp.Rule == "*" {
+				wildcard = append(wildcard, rp.Id)
+			} else {
+				specific = append(specific, rp.Id)
+			}
+		}
+		if len(wildcard) == 0 {
+			return nil // nothing to reorder around
+		}
+
+		up := cs.Role.NewUpdateRolePermissionParams(roleID)
+		up.SetRuleorder(append(specific, wildcard...))
+		if _, err := cs.Role.UpdateRolePermission(up); err != nil {
+			if !strings.Contains(err.Error(), "has changed while you were making updates") {
+				return fmt.Errorf("Error reordering RolePermissions on role %s: %s", roleID, err)
+			}
+			lastErr = err
+			time.Sleep(time.Duration(attempt) * 500 * time.Millisecond) // linear backoff, jitter-free is fine at this scale
+			continue
+		}
+		return nil
 	}
-	return nil
+	return fmt.Errorf("Error reordering RolePermissions on role %s after %d attempts (concurrent reorders kept colliding): %s", roleID, maxAttempts, lastErr)
 }
 
 func resourceCloudStackRolePermissionRead(d *schema.ResourceData, meta interface{}) error {

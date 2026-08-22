@@ -35,7 +35,7 @@ func resourceCloudStackKubernetesCluster() *schema.Resource {
 		Update: resourceCloudStackKubernetesClusterUpdate,
 		Delete: resourceCloudStackKubernetesClusterDelete,
 		Importer: &schema.ResourceImporter{
-			State: importStatePassthrough,
+			State: resourceCloudStackKubernetesClusterImport,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -224,6 +224,24 @@ func resourceCloudStackKubernetesCluster() *schema.Resource {
 			},
 		},
 	}
+}
+
+// A project-scoped cluster can't be found by GetKubernetesClusterByID without the project ID --
+// and on a plain `terraform import <address> <id>`, Read runs against a ResourceData populated
+// with ONLY the ID (config values like `project` are not available yet), so a bare `terraform
+// import ... <cluster-id>` silently fails to find a project-scoped cluster at all ("Cannot import
+// non-existent remote object", found live importing a manually-recreated cluster). Accepts an
+// optional `<project>:<cluster-id>` composite import ID so Read has what it needs; a plain
+// `<cluster-id>` (no colon) still works exactly as before for a cluster with no project.
+func resourceCloudStackKubernetesClusterImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	id := d.Id()
+	if project, clusterID, found := strings.Cut(id, ":"); found {
+		d.SetId(clusterID)
+		if err := d.Set("project", project); err != nil {
+			return nil, err
+		}
+	}
+	return []*schema.ResourceData{d}, nil
 }
 
 func resourceCloudStackKubernetesClusterCreate(d *schema.ResourceData, meta interface{}) error {
