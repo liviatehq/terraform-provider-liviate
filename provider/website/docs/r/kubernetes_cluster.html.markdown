@@ -125,6 +125,7 @@ The following arguments are supported:
 * `docker_registry_url` - (Optional) URL for the docker image private registry
 * `docker_registry_username` - (Optional) password for the docker image private registry
 * `docker_registry_password"` - (Optional) user name for the docker image private registry
+* `enable_csi` - (Optional) Install the CloudStack CSI driver (dynamic `PersistentVolumeClaim` provisioning) into the cluster at bootstrap. **Cannot be changed after creation** -- CloudStack has no API to toggle CSI on a running cluster, so changing this forces a destroy/recreate. Note: the platform's built-in `"Project Kubernetes Service Role"` (used by every cluster's CSI/CCM account) needs volume-management permissions granted before PVCs will actually provision -- see `liviate_role_permission` and the `kubernetes-csi-storage` sample.
 
 ### Autoscaling Configuration
 
@@ -169,6 +170,7 @@ In addition to all arguments above, the following attributes are exported:
 * `master_nodes` - The number of master/control nodes in the cluster.
 * `cpu_number` - The number of CPUs allocated to the cluster.
 * `memory` - The amount of memory (in MB) allocated to the cluster.
+* `enable_csi` - Whether the CSI driver is actually installed (reads back CloudStack's own `csienabled`, so this reflects reality even for a cluster where `enable_csi` was never explicitly set in config).
 
 ## Import
 

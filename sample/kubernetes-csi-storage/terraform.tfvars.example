@@ -1,0 +1,7 @@
+liviate_api_key    = "your-api-key"
+liviate_secret_key = "your-secret-key"
+zone_id            = ""
+kubernetes_version = "v1.36.0"
+cluster_name       = "liviate-k8s-csi-01"
+service_offering   = "liviate-vcpu-2-4gb-20260317-01"
+disk_offering_id   = "" # a disk offering with iscustomized=true

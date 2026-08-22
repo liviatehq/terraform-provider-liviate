@@ -27,6 +27,7 @@ require (
 	github.com/hashicorp/terraform-plugin-mux v0.16.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.33.0
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -84,3 +85,8 @@ require (
 )
 
 go 1.23.0
+
+// Local fork adding CSI support (enablecsi param + csienabled response field) to
+// CreateKubernetesCluster/KubernetesCluster -- upstream v2.18.1 predates CSI support entirely.
+// See ../cloudstack-go-fork.
+replace github.com/apache/cloudstack-go/v2 => ../cloudstack-go-fork

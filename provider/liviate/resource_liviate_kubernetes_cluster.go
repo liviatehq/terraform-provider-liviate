@@ -214,6 +214,14 @@ func resourceCloudStackKubernetesCluster() *schema.Resource {
 				ForceNew:    true,
 				Description: "An optional map of node roles to instance templates. If not specified, system VM template will be used. Valid roles are: worker, control, etcd",
 			},
+
+			"enable_csi": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Computed:    true,
+				ForceNew:    true, // CSI is wired up at cluster bootstrap; CloudStack has no toggle-in-place API
+				Description: "Install the CloudStack CSI driver (dynamic PVC provisioning) into the cluster at creation. Cannot be changed after creation -- destroy/recreate to flip it.",
+			},
 		},
 	}
 }
@@ -261,6 +269,9 @@ func resourceCloudStackKubernetesClusterCreate(d *schema.ResourceData, meta inte
 	}
 	if noderootdisksize, ok := d.GetOk("noderootdisksize"); ok {
 		p.SetNoderootdisksize(int64(noderootdisksize.(int)))
+	}
+	if enableCsi, ok := d.GetOkExists("enable_csi"); ok {
+		p.SetEnablecsi(enableCsi.(bool))
 	}
 	if dockerurl, ok := d.GetOk("docker_registry_url"); ok {
 		p.SetDockerregistryurl(dockerurl.(string))
@@ -410,6 +421,7 @@ func resourceCloudStackKubernetesClusterRead(d *schema.ResourceData, meta interf
 
 	d.Set("etcd_nodes_size", cluster.Etcdnodes)
 	d.Set("cni_configuration_id", cluster.Cniconfigurationid)
+	d.Set("enable_csi", cluster.Csienabled)
 
 	setValueOrID(d, "kubernetes_version", cluster.Kubernetesversionname, cluster.Kubernetesversionid)
 	setValueOrID(d, "service_offering", cluster.Serviceofferingname, cluster.Serviceofferingid)
