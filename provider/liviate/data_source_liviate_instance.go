@@ -37,6 +37,15 @@ func dataSourceCloudstackInstance() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"filter": dataSourceFiltersSchema(),
 
+			// Optional input (name or ID) scoping the lookup to a CloudStack Project -- without
+			// it, an instance living inside a Project is invisible to this data source no matter
+			// what `filter` blocks are given (found live 2026-08-24, same root cause as
+			// data_source_liviate_ipaddress.go).
+			"project": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
+
 			//Computed values
 			"instance_id": {
 				Type:     schema.TypeString,
@@ -98,6 +107,20 @@ func dataSourceCloudstackInstanceRead(d *schema.ResourceData, meta interface{}) 
 
 	cs := meta.(*cloudstack.CloudStackClient)
 	p := cs.VirtualMachine.NewListVirtualMachinesParams()
+	p.SetListall(true)
+	// See data_source_liviate_ipaddress.go's identical block for why this is needed (plain
+	// listall=true does NOT surface Project-owned resources; the actual projectid param does).
+	if project, ok := d.GetOk("project"); ok {
+		projectID := project.(string)
+		if !cloudstack.IsID(projectID) {
+			id, _, err := cs.Project.GetProjectID(projectID)
+			if err != nil {
+				return fmt.Errorf("Failed to resolve project %q: %s", projectID, err)
+			}
+			projectID = id
+		}
+		p.SetProjectid(projectID)
+	}
 	csInstances, err := cs.VirtualMachine.ListVirtualMachines(p)
 
 	if err != nil {

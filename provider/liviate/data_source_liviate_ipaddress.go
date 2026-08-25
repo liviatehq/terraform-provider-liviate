@@ -59,7 +59,16 @@ func dataSourceCloudstackIPAddress() *schema.Resource {
 			},
 
 			"project": {
+				// Optional input (name or ID) so a caller can scope the lookup to a CloudStack
+				// Project -- without it, resources living inside a Project are invisible to this
+				// data source no matter what `filter` blocks are given (they only match
+				// client-side against whatever the underlying list call already returned, and
+				// that call excludes Project-scoped resources unless projectid is explicitly
+				// passed; found live 2026-08-24, matches the WithProject() pattern already used
+				// by every liviate_* RESOURCE in this provider). Still Computed so it keeps
+				// working as an output attribute when left unset.
 				Type:     schema.TypeString,
+				Optional: true,
 				Computed: true,
 			},
 
@@ -81,6 +90,22 @@ func dataSourceCloudstackIPAddress() *schema.Resource {
 func datasourceCloudStackIPAddressRead(d *schema.ResourceData, meta interface{}) error {
 	cs := meta.(*cloudstack.CloudStackClient)
 	p := cs.Address.NewListPublicIpAddressesParams()
+	p.SetListall(true)
+	// `project` (name or ID) explicitly scopes to a CloudStack Project -- plain listall=true does
+	// NOT surface Project-owned resources on its own, CloudStack requires the actual projectid
+	// param (found live 2026-08-24: listall alone still returned zero results for a Project-scoped
+	// IP that genuinely existed). Mirrors WithProject()'s name-or-ID resolution in cloudstack.go.
+	if project, ok := d.GetOk("project"); ok {
+		projectID := project.(string)
+		if !cloudstack.IsID(projectID) {
+			id, _, err := cs.Project.GetProjectID(projectID)
+			if err != nil {
+				return fmt.Errorf("Failed to resolve project %q: %s", projectID, err)
+			}
+			projectID = id
+		}
+		p.SetProjectid(projectID)
+	}
 	csPublicIPAddresses, err := cs.Address.ListPublicIpAddresses(p)
 
 	if err != nil {
