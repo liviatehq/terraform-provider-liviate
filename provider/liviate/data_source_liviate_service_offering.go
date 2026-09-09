@@ -128,11 +128,37 @@ func applyServiceOfferingFilters(serviceOffering *cloudstack.ServiceOffering, fi
 			return false, fmt.Errorf("Invalid regex: %s", err)
 		}
 		updatedName := strings.ReplaceAll(m["name"].(string), "_", "")
-		serviceOfferingField := serviceOfferingJSON[updatedName].(string)
+		serviceOfferingField := stringifyFilterValue(serviceOfferingJSON[updatedName])
 		if !r.MatchString(serviceOfferingField) {
 			return false, nil
 		}
 
 	}
 	return true, nil
+}
+
+// stringifyFilterValue renders a decoded JSON field (string, float64, bool, or
+// nil for a field that doesn't exist on this service offering, e.g. gpu-only
+// fields on a non-GPU offering) as a string for filter regex matching. Without
+// this, filtering on a numeric/boolean field (cpunumber, memory, gpudisplay,
+// dynamicscalingenabled, ...) panics on the hard type assertion to string --
+// found live 2026-09-09 trying to filter by cpunumber/memory to resolve a
+// service offering by its stable specs instead of its rotating date-stamped
+// name (see client-demos-infra GLPI Problem #53).
+func stringifyFilterValue(v interface{}) string {
+	switch val := v.(type) {
+	case string:
+		return val
+	case float64:
+		if val == float64(int64(val)) {
+			return fmt.Sprintf("%d", int64(val))
+		}
+		return fmt.Sprintf("%v", val)
+	case bool:
+		return fmt.Sprintf("%t", val)
+	case nil:
+		return ""
+	default:
+		return fmt.Sprintf("%v", val)
+	}
 }
