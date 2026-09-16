@@ -949,6 +949,28 @@ func resourceCloudStackInstanceImport(d *schema.ResourceData, meta interface{}) 
 		}
 	}
 
+	// setValueOrID (resources.go) decides whether to store a field's NAME or its ID by checking
+	// whether the value ALREADY in ResourceData looks like a UUID -- on a fresh import that field
+	// is empty, so IsID("") is false and it defaults to storing the human-readable name. Every
+	// real .tf config in this repo references template/zone by ID (e.g. `template =
+	// data.liviate_template.node_os.id`), and both are ForceNew -- so an imported instance's state
+	// ends up with the NAME while config has the ID, and the very next plan reads that as a
+	// forces-replacement diff. Found live 2026-09-16 recovering deployments/redis: import
+	// succeeded, but the next apply then destroyed and tried to recreate the just-imported,
+	// already-running instance purely because of this name/ID mismatch on two ForceNew fields.
+	// Pre-seeding both with a syntactically-valid (but otherwise meaningless) UUID before Read
+	// runs makes IsID() true, so setValueOrID stores the real ID it fetches from CloudStack
+	// instead of the name -- matching what config actually expects. The placeholder value itself
+	// is irrelevant; Read overwrites it with the real ID unconditionally once the ID-branch is
+	// taken.
+	const idShapedPlaceholder = "00000000-0000-0000-0000-000000000000"
+	if d.Get("template").(string) == "" {
+		d.Set("template", idShapedPlaceholder)
+	}
+	if d.Get("zone").(string) == "" {
+		d.Set("zone", idShapedPlaceholder)
+	}
+
 	// We set start_vm to true as that matches the default and we assume that
 	// when you need to import an instance it means it is already running.
 	d.Set("start_vm", true)
