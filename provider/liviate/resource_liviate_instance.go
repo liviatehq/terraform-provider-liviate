@@ -482,6 +482,9 @@ func resourceCloudStackInstanceCreate(d *schema.ResourceData, meta interface{}) 
 	if err = setTags(cs, d, "userVm"); err != nil {
 		return fmt.Errorf("Error setting tags on the new instance %s: %s", name, err)
 	}
+	if err = applyManagedByTag(cs, r.Id, "userVm"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag on the new instance %s: %s", name, err)
+	}
 
 	// Set the connection info for any configured provisioners
 	d.SetConnInfo(map[string]string{
@@ -927,7 +930,25 @@ func resourceCloudStackInstanceDelete(d *schema.ResourceData, meta interface{}) 
 
 	return nil
 }
+
+// A project-scoped instance can't be found by GetVirtualMachineByID without the project ID --
+// and on a plain `terraform import <address> <id>`, Read runs against a ResourceData populated
+// with ONLY the ID (config values like `project` are not available yet), so a bare `terraform
+// import ... <instance-id>` silently fails to find a project-scoped instance at all ("Cannot
+// import non-existent remote object", found live recovering a liviate_instance whose Create had
+// timed out after CloudStack itself finished the deploy). Accepts an optional
+// `<project>:<instance-id>` composite import ID so Read has what it needs; a plain
+// `<instance-id>` (no colon) still works exactly as before for an instance with no project. Same
+// pattern as resourceCloudStackKubernetesClusterImport.
 func resourceCloudStackInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	id := d.Id()
+	if project, instanceID, found := strings.Cut(id, ":"); found {
+		d.SetId(instanceID)
+		if err := d.Set("project", project); err != nil {
+			return nil, err
+		}
+	}
+
 	// We set start_vm to true as that matches the default and we assume that
 	// when you need to import an instance it means it is already running.
 	d.Set("start_vm", true)

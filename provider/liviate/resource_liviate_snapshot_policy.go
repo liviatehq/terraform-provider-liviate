@@ -147,6 +147,9 @@ func resourceCloudstackSnapshotPolicyCreate(d *schema.ResourceData, meta interfa
 	if err := setTags(cs, d, "SnapshotPolicy"); err != nil {
 		return fmt.Errorf("Error setting tags on snapshot policy %s: %s", d.Id(), err)
 	}
+	if err := applyManagedByTag(cs, d.Id(), "SnapshotPolicy"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag on snapshot policy %s: %s", d.Id(), err)
+	}
 
 	return resourceCloudstackSnapshotPolicyRead(d, meta)
 }

@@ -182,7 +182,10 @@ func applyFilters(template *cloudstack.Template, filters *schema.Set) (bool, err
 			return false, fmt.Errorf("Invalid regex: %s", err)
 		}
 		updatedName := strings.ReplaceAll(m["name"].(string), "_", "")
-		templateField := templateJSON[updatedName].(string)
+		// stringifyFilterValue (data_source_liviate_service_offering.go) handles the same
+		// hard-cast-to-string panic that hit ispublic/isfeatured/isready-style boolean fields --
+		// see GLPI Problem #59.
+		templateField := stringifyFilterValue(templateJSON[updatedName])
 		if !r.MatchString(templateField) {
 			return false, nil
 		}

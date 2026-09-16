@@ -254,6 +254,9 @@ func resourceCloudStackTemplateCreate(d *schema.ResourceData, meta interface{}) 
 	if err = setTags(cs, d, "Template"); err != nil {
 		return fmt.Errorf("Error setting tags on the template %s: %s", name, err)
 	}
+	if err = applyManagedByTag(cs, r.RegisterTemplate[0].Id, "Template"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag on the template %s: %s", name, err)
+	}
 
 	// Link userdata if specified
 	if err = linkUserdataToTemplate(cs, d, r.RegisterTemplate[0].Id); err != nil {

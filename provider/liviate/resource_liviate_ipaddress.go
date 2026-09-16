@@ -138,6 +138,9 @@ func resourceCloudStackIPAddressCreate(d *schema.ResourceData, meta interface{})
 	if err != nil {
 		return fmt.Errorf("Error setting tags on the IP address: %s", err)
 	}
+	if err := applyManagedByTag(cs, r.Id, "PublicIpAddress"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag on the IP address: %s", err)
+	}
 
 	return resourceCloudStackIPAddressRead(d, meta)
 }

@@ -152,6 +152,9 @@ func resourceCloudStackDiskCreate(d *schema.ResourceData, meta interface{}) erro
 	if err != nil {
 		return fmt.Errorf("Error setting tags on the new disk %s: %s", name, err)
 	}
+	if err := applyManagedByTag(cs, r.Id, "Volume"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag on the new disk %s: %s", name, err)
+	}
 
 	if d.Get("attach").(bool) {
 		if err := resourceCloudStackDiskAttach(d, meta); err != nil {

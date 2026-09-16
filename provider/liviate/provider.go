@@ -71,9 +71,20 @@ func Provider() *schema.Provider {
 			},
 
 			"timeout": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("LIVIATE_TIMEOUT", 900),
+				Type:     schema.TypeInt,
+				Required: true,
+				// Default raised from 900s (15min) to 1800s (30min) -- found live 2026-09-16 (GLPI
+				// Problem #67/#69): the CloudStack management server can silently stall 15-20+
+				// minutes between planning a VM's root-disk placement and actually dispatching the
+				// template-copy command, with no logged cause and no indication to the client that
+				// it's still legitimately in progress. The old 900s default sat right in the middle
+				// of that observed stall window, so a completely healthy (if slow) deploy reliably
+				// got reported as a hard Terraform failure -- and worse, the resource's ID never
+				// reaches state when that happens (see GLPI Problem #68's composite-import fix for
+				// recovering from exactly that). 1800s gives real headroom above the worst stall
+				// seen so far without being unreasonably long; still fully overridable via this
+				// attribute or LIVIATE_TIMEOUT for a deployment that needs even more.
+				DefaultFunc: schema.EnvDefaultFunc("LIVIATE_TIMEOUT", 1800),
 			},
 		},
 

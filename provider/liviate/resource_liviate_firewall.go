@@ -111,6 +111,32 @@ func resourceCloudStackFirewall() *schema.Resource {
 	}
 }
 
+// CloudStack rejects a firewall rule with a generic, uninformative error (errorcode 530,
+// "Failed to create firewall rule") when the target network's virtual router hasn't finished
+// starting yet -- a normal, common condition immediately after a network's first VM triggers
+// network implementation (creating the router takes real time), not a rare edge case. CloudStack
+// gives no more specific error text to distinguish this from a genuinely invalid rule, so this
+// retries on that exact error a bounded number of times with linear backoff before giving up --
+// same style as reorderSpecificRulesBeforeWildcards (resource_liviate_role_permission.go) retrying
+// its own known-transient CloudStack error text. A genuinely invalid rule still fails, just after
+// these retries are exhausted instead of on the first attempt. See GLPI Problem #69.
+func createFirewallRuleWithRetry(cs *cloudstack.CloudStackClient, p *cloudstack.CreateFirewallRuleParams) (*cloudstack.CreateFirewallRuleResponse, error) {
+	const maxAttempts = 10
+	var lastErr error
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		r, err := cs.Firewall.CreateFirewallRule(p)
+		if err == nil {
+			return r, nil
+		}
+		if !strings.Contains(err.Error(), "Failed to create firewall rule") {
+			return nil, err
+		}
+		lastErr = err
+		time.Sleep(time.Duration(attempt) * 2 * time.Second)
+	}
+	return nil, fmt.Errorf("Error creating firewall rule after %d attempts (network's virtual router may not be ready, or this is a genuine rule error): %s", maxAttempts, lastErr)
+}
+
 func resourceCloudStackFirewallCreate(d *schema.ResourceData, meta interface{}) error {
 	// Make sure all required parameters are there
 	if err := verifyFirewallParams(d); err != nil {
@@ -197,7 +223,7 @@ func createFirewallRule(d *schema.ResourceData, meta interface{}, rule map[strin
 		p.SetIcmptype(rule["icmp_type"].(int))
 		p.SetIcmpcode(rule["icmp_code"].(int))
 
-		r, err := cs.Firewall.CreateFirewallRule(p)
+		r, err := createFirewallRuleWithRetry(cs, p)
 		if err != nil {
 			return err
 		}
@@ -238,7 +264,7 @@ func createFirewallRule(d *schema.ResourceData, meta interface{}, rule map[strin
 				p.SetStartport(startPort)
 				p.SetEndport(endPort)
 
-				r, err := cs.Firewall.CreateFirewallRule(p)
+				r, err := createFirewallRuleWithRetry(cs, p)
 				if err != nil {
 					return err
 				}

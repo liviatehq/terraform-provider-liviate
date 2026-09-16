@@ -112,6 +112,34 @@ func tagsFromSchema(m map[string]interface{}) map[string]string {
 	return result
 }
 
+// managedByTagKey/managedByTagValue mark a resource as Terraform-owned, deliberately kept
+// SEPARATE from the user-facing "tags" schema attribute (never merged into it, never read back
+// via d.Set("tags", ...)) -- a Terraform-managed resource looks identical to a hand-clicked one
+// in console.liviate.com, with no way to tell which resources are safe to hand-edit versus which
+// are Terraform state's responsibility (see GLPI Problem #60). Reading this back into the "tags"
+// schema attribute would cause every plan to show a spurious diff wanting to remove a tag the
+// user's own .tf config never declared -- confirmed by checking every d.Set("tags", ...) call
+// site in this package, several of which round-trip tags read from CloudStack straight back into
+// that same schema-tracked attribute.
+const (
+	managedByTagKey   = "managed-by"
+	managedByTagValue = "terraform"
+)
+
+// applyManagedByTag unconditionally tags a resource as Terraform-managed, independent of whether
+// the user declared any "tags" of their own. Call once, right after a resource's own setTags call
+// in its Create function, with the same resourcetype string. Safe to call even when the resource
+// has no user-declared tags (setTags itself is a no-op in that case, since it's gated on
+// d.GetOk("tags") -- this helper is not, and always applies the marker).
+func applyManagedByTag(cs *cloudstack.CloudStackClient, id string, resourcetype string) error {
+	p := cs.Resourcetags.NewCreateTagsParams(
+		[]string{id}, resourcetype,
+		map[string]string{managedByTagKey: managedByTagValue},
+	)
+	_, err := cs.Resourcetags.CreateTags(p)
+	return err
+}
+
 func tagsToMap(tags []cloudstack.Tags) map[string]string {
 	result := make(map[string]string, len(tags))
 	for _, tag := range tags {

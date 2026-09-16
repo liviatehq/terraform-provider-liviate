@@ -32,6 +32,22 @@ import (
 
 const none = "none"
 
+// networkOfferingAliases maps convenience shorthand names to the real stock
+// CloudStack network offering names, so users don't need to know/spell them
+// out. Any value not found here is passed through unchanged, so real
+// offering names (or IDs) keep working exactly as before.
+var networkOfferingAliases = map[string]string{
+	"isolated": "DefaultIsolatedNetworkOfferingWithSourceNatService",
+	"shared":   "DefaultSharedNetworkOffering",
+}
+
+func resolveNetworkOffering(value string) string {
+	if real, ok := networkOfferingAliases[value]; ok {
+		return real
+	}
+	return value
+}
+
 func resourceCloudStackNetwork() *schema.Resource {
 	aclidSchema := &schema.Schema{
 		Type:     schema.TypeString,
@@ -106,8 +122,10 @@ func resourceCloudStackNetwork() *schema.Resource {
 			},
 
 			"network_offering": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "isolated",
+				Description: "Name or ID of the network offering, or a shorthand alias (\"isolated\", \"shared\"). Defaults to \"isolated\" (DefaultIsolatedNetworkOfferingWithSourceNatService) if not specified.",
 			},
 
 			"vlan": {
@@ -164,7 +182,7 @@ func resourceCloudStackNetworkCreate(d *schema.ResourceData, meta interface{}) e
 	name := d.Get("name").(string)
 
 	// Retrieve the network_offering ID
-	networkofferingid, e := retrieveID(cs, "network_offering", d.Get("network_offering").(string))
+	networkofferingid, e := retrieveID(cs, "network_offering", resolveNetworkOffering(d.Get("network_offering").(string)))
 	if e != nil {
 		return e.Error()
 	}
@@ -247,6 +265,9 @@ func resourceCloudStackNetworkCreate(d *schema.ResourceData, meta interface{}) e
 	if err = setTags(cs, d, "network"); err != nil {
 		return fmt.Errorf("Error setting tags: %v", err)
 	}
+	if err = applyManagedByTag(cs, r.Id, "network"); err != nil {
+		return fmt.Errorf("Error setting managed-by tag: %v", err)
+	}
 
 	if d.Get("source_nat_ip").(bool) {
 		// Create a new parameter struct
@@ -317,7 +338,14 @@ func resourceCloudStackNetworkRead(d *schema.ResourceData, meta interface{}) err
 	}
 	d.Set("tags", tags)
 
-	setValueOrID(d, "network_offering", n.Networkofferingname, n.Networkofferingid)
+	// Only refresh network_offering from CloudStack if what's configured (after
+	// resolving any alias) doesn't already match what's actually assigned.
+	// Otherwise a shorthand like "isolated" would permanently drift against
+	// the real offering name/ID CloudStack reports, forcing an update every plan.
+	configuredOffering := d.Get("network_offering").(string)
+	if resolveNetworkOffering(configuredOffering) != n.Networkofferingname && configuredOffering != n.Networkofferingid {
+		setValueOrID(d, "network_offering", n.Networkofferingname, n.Networkofferingid)
+	}
 	setValueOrID(d, "project", n.Project, n.Projectid)
 	setValueOrID(d, "zone", n.Zonename, n.Zoneid)
 
@@ -379,7 +407,7 @@ func resourceCloudStackNetworkUpdate(d *schema.ResourceData, meta interface{}) e
 	// Check if the network offering is changed
 	if d.HasChange("network_offering") {
 		// Retrieve the network_offering ID
-		networkofferingid, e := retrieveID(cs, "network_offering", d.Get("network_offering").(string))
+		networkofferingid, e := retrieveID(cs, "network_offering", resolveNetworkOffering(d.Get("network_offering").(string)))
 		if e != nil {
 			return e.Error()
 		}
