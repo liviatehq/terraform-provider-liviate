@@ -530,6 +530,14 @@ func resourceCloudStackInstanceRead(d *schema.ResourceData, meta interface{}) er
 	p.SetType("ROOT")
 	p.SetVirtualmachineid(d.Id())
 
+	// Root-admin ListVolumes calls don't see Project-scoped volumes unless projectid is set
+	// (or listall=true) -- see GLPI Problem #77. Without this, every instance living inside a
+	// CloudStack Project (which is every deployment in this repo, see var.project) silently
+	// finds zero volumes here.
+	if err := setProjectid(p, cs, d); err != nil {
+		return err
+	}
+
 	// Get the root disk of the instance.
 	l, err := cs.Volume.ListVolumes(p)
 	if err != nil {
@@ -859,6 +867,14 @@ func resourceCloudStackInstanceUpdate(d *schema.ResourceData, meta interface{}) 
 		p := cs.Volume.NewListVolumesParams()
 		p.SetType("ROOT")
 		p.SetVirtualmachineid(d.Id())
+
+		// Root-admin ListVolumes calls don't see Project-scoped volumes unless projectid is set
+		// (or listall=true) -- see GLPI Problem #77. Without this, resizing root_disk_size fails
+		// with "Failed to find root disk" for every instance living inside a CloudStack Project
+		// (which is every deployment in this repo, see var.project).
+		if err := setProjectid(p, cs, d); err != nil {
+			return err
+		}
 
 		l, err := cs.Volume.ListVolumes(p)
 		if err != nil {

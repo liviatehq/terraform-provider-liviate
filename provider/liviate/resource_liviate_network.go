@@ -20,13 +20,16 @@
 package liviate
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/apache/cloudstack-go/v2/cloudstack"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -46,6 +49,15 @@ func resolveNetworkOffering(value string) string {
 		return real
 	}
 	return value
+}
+
+func hasSourceNatService(no *cloudstack.NetworkOffering) bool {
+	for _, s := range no.Service {
+		if s.Name == "SourceNat" {
+			return true
+		}
+	}
+	return false
 }
 
 func resourceCloudStackNetwork() *schema.Resource {
@@ -296,6 +308,40 @@ func resourceCloudStackNetworkCreate(d *schema.ResourceData, meta interface{}) e
 		d.Set("source_nat_ip_id", ip.Id)
 
 		// Set the additional partial
+	} else if hasSourceNatService(no) {
+		// The network offering provisions a SourceNat IP automatically as a side effect of
+		// createNetwork (we didn't request one explicitly above) -- CloudStack settles that
+		// association asynchronously, so createNetwork can report success before the IP is
+		// actually visible via listPublicIpAddresses yet. Any same-apply consumer (this
+		// resource's own Read below, or an external data.liviate_ipaddress lookup in the
+		// caller's config) can race that -- see GLPI Problem #61. Poll briefly for it to
+		// settle before returning control to Terraform; non-fatal on timeout, since a delay
+		// here shouldn't fail network creation itself.
+		ctx := context.Background()
+		waitErr := retry.RetryContext(ctx, 60*time.Second, func() *retry.RetryError {
+			lp := cs.Address.NewListPublicIpAddressesParams()
+			lp.SetAssociatednetworkid(r.Id)
+			lp.SetIssourcenat(true)
+			if perr := setProjectid(lp, cs, d); perr != nil {
+				return retry.NonRetryableError(perr)
+			}
+
+			resp, err := cs.Address.ListPublicIpAddresses(lp)
+			if err != nil {
+				return retry.NonRetryableError(
+					fmt.Errorf("error checking SourceNat IP association for network %s: %s", r.Id, err))
+			}
+			if resp.Count == 0 {
+				log.Printf("[DEBUG] SourceNat IP for network %s not yet associated, retrying...", r.Id)
+				return retry.RetryableError(
+					fmt.Errorf("SourceNat IP not yet associated for network %s", r.Id))
+			}
+
+			return nil
+		})
+		if waitErr != nil {
+			log.Printf("[WARN] Timed out waiting for SourceNat IP to settle for network %s: %s", r.Id, waitErr)
+		}
 	}
 
 	return resourceCloudStackNetworkRead(d, meta)
