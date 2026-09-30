@@ -20,6 +20,7 @@
 package liviate
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -28,6 +29,7 @@ import (
 	"time"
 
 	"github.com/apache/cloudstack-go/v2/cloudstack"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -89,14 +91,16 @@ func dataSourceCloudstackIPAddress() *schema.Resource {
 
 func datasourceCloudStackIPAddressRead(d *schema.ResourceData, meta interface{}) error {
 	cs := meta.(*cloudstack.CloudStackClient)
-	p := cs.Address.NewListPublicIpAddressesParams()
-	p.SetListall(true)
+
 	// `project` (name or ID) explicitly scopes to a CloudStack Project -- plain listall=true does
 	// NOT surface Project-owned resources on its own, CloudStack requires the actual projectid
 	// param (found live 2026-08-24: listall alone still returned zero results for a Project-scoped
 	// IP that genuinely existed). Mirrors WithProject()'s name-or-ID resolution in cloudstack.go.
+	// Resolved once, outside the retry loop below -- project-name-to-ID resolution isn't the thing
+	// racing here.
+	var projectID string
 	if project, ok := d.GetOk("project"); ok {
-		projectID := project.(string)
+		projectID = project.(string)
 		if !cloudstack.IsID(projectID) {
 			id, _, err := cs.Project.GetProjectID(projectID)
 			if err != nil {
@@ -104,37 +108,62 @@ func datasourceCloudStackIPAddressRead(d *schema.ResourceData, meta interface{})
 			}
 			projectID = id
 		}
-		p.SetProjectid(projectID)
-	}
-	csPublicIPAddresses, err := cs.Address.ListPublicIpAddresses(p)
-
-	if err != nil {
-		return fmt.Errorf("Failed to list ip addresses: %s", err)
 	}
 
-	filters := d.Get("filter")
-	var publicIpAddresses []*cloudstack.PublicIpAddress
+	filters := d.Get("filter").(*schema.Set)
 
-	for _, ip := range csPublicIPAddresses.PublicIpAddresses {
-		match, err := applyIPAddressFilters(ip, filters.(*schema.Set))
-
+	// GLPI Problem #61: a freshly-created network's SourceNat IP (or any other just-associated
+	// public IP) is not always visible via listPublicIpAddresses the instant CloudStack's own API
+	// call that created it returns -- the association settles asynchronously, server-side. This
+	// data source has no notion of "which IP am I waiting for," only a client-side filter, so
+	// unlike resource_liviate_network.go's own Create-time poll (which targets one specific
+	// network's SourceNat IP), this retries the exact same list+filter this function already does
+	// whenever it comes back with zero matches, up to 60s, before giving up -- covering every
+	// caller of this data source (a `depends_on` on the freshly-created network resource is not by
+	// itself enough: that resource's own Create only polls its own SourceNat association, not
+	// whatever OTHER filter a caller's `data.liviate_ipaddress` block might be using).
+	var publicIpAddress *cloudstack.PublicIpAddress
+	ctx := context.Background()
+	waitErr := retry.RetryContext(ctx, 60*time.Second, func() *retry.RetryError {
+		p := cs.Address.NewListPublicIpAddressesParams()
+		p.SetListall(true)
+		if projectID != "" {
+			p.SetProjectid(projectID)
+		}
+		csPublicIPAddresses, err := cs.Address.ListPublicIpAddresses(p)
 		if err != nil {
-			return err
+			return retry.NonRetryableError(fmt.Errorf("Failed to list ip addresses: %s", err))
 		}
-		if match {
-			publicIpAddresses = append(publicIpAddresses, ip)
+
+		var matches []*cloudstack.PublicIpAddress
+		for _, ip := range csPublicIPAddresses.PublicIpAddresses {
+			match, ferr := applyIPAddressFilters(ip, filters)
+			if ferr != nil {
+				return retry.NonRetryableError(ferr)
+			}
+			if match {
+				matches = append(matches, ip)
+			}
 		}
+
+		if len(matches) == 0 {
+			log.Printf("[DEBUG] No ip address matching the specified filter yet, retrying...")
+			return retry.RetryableError(fmt.Errorf("No ip address is matching with the specified regex"))
+		}
+
+		// return the latest ip address from the list of filtered ip addresses according
+		// to its creation date
+		latest, lerr := latestIPAddress(matches)
+		if lerr != nil {
+			return retry.NonRetryableError(lerr)
+		}
+		publicIpAddress = latest
+		return nil
+	})
+	if waitErr != nil {
+		return waitErr
 	}
 
-	if len(publicIpAddresses) == 0 {
-		return fmt.Errorf("No ip address is matching with the specified regex")
-	}
-	//return the latest ip address from the list of filtered ip addresses according
-	//to its creation date
-	publicIpAddress, err := latestIPAddress(publicIpAddresses)
-	if err != nil {
-		return err
-	}
 	log.Printf("[DEBUG] Selected ip addresses: %s\n", publicIpAddress.Ipaddress)
 
 	return ipAddressDescriptionAttributes(d, publicIpAddress)
